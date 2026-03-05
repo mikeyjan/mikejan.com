@@ -1,0 +1,161 @@
+/**
+ * PersonalInfoForm component styles
+ * Modern, clean form design
+ */
+
+.personal-info-form {
+  width: 100%;
+}
+
+.personal-info-form-title {
+  display: none; /* Title is now in AdminPanel section header */
+}
+
+.personal-info-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.personal-info-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.personal-info-form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.personal-info-form-input,
+.personal-info-form-textarea {
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.personal-info-form-input::placeholder,
+.personal-info-form-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.personal-info-form-input:hover,
+.personal-info-form-textarea:hover {
+  border-color: #cbd5e1;
+}
+
+.personal-info-form-input:focus,
+.personal-info-form-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.personal-info-form-input:disabled,
+.personal-info-form-textarea:disabled {
+  background-color: #f8fafc;
+  cursor: not-allowed;
+  color: #94a3b8;
+}
+
+.personal-info-form-input.error,
+.personal-info-form-textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.personal-info-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+.personal-info-form-error {
+  font-size: 13px;
+  color: #ef4444;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.personal-info-form-error::before {
+  content: "⚠";
+  font-size: 12px;
+}
+
+.personal-info-form-success {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  color: #065f46;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.personal-info-form-success::before {
+  content: "✓";
+  font-weight: 700;
+}
+
+.personal-info-form-error-message {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.personal-info-form-button {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  align-self: flex-start;
+  min-height: 44px;
+  min-width: 44px;
+  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+}
+
+.personal-info-form-button:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+.personal-info-form-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.personal-info-form-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .personal-info-form-button {
+    width: 100%;
+  }
+}

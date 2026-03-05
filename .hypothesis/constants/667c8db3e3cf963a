@@ -1,0 +1,4 @@
+# file: /Users/mikejan/Desktop/Kiro/personal-website/amplify/backend/function/shared/geocoding.py
+# hypothesis_version: 6.141.1
+
+[':lat', ':lng', 'GEOCODING_API_KEY', 'Item', 'dynamodb', 'geometry', 'id', 'key', 'lat', 'latitude', 'limit', 'lng', 'longitude', 'no_annotations', 'q', 'r', 'results', 'secrets.json']

@@ -1,0 +1,110 @@
+/**
+ * AdminAuth component styles
+ * Requirements: 6.1-6.3
+ */
+
+.admin-auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.admin-auth-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.admin-auth-title {
+  margin: 0 0 30px 0;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: #333;
+}
+
+.admin-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-auth-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
+.admin-auth-input {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.admin-auth-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.admin-auth-input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.admin-auth-error {
+  padding: 12px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  color: #c33;
+  font-size: 14px;
+}
+
+.admin-auth-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  /* Touch-friendly minimum size */
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.admin-auth-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.admin-auth-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .admin-auth-container {
+    padding: 30px 20px;
+  }
+
+  .admin-auth-title {
+    font-size: 20px;
+  }
+}

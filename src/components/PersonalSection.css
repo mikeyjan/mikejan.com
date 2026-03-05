@@ -1,0 +1,128 @@
+.personal-section {
+  width: 100%;
+  padding: 7rem 0 6rem;
+  background: #0a0a0a;
+  display: flex;
+  align-items: flex-start;
+}
+
+.personal-content {
+  max-width: 1020px;
+  width: 100%;
+  text-align: left;
+  padding: 0 calc(var(--page-px) * 2);
+}
+
+.personal-name {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.personal-tagline {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #2dd4bf;
+  margin: 0 0 1.75rem 0;
+  line-height: 1.4;
+}
+
+.personal-description {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 1.25rem 0;
+  line-height: 1.75;
+}
+
+.personal-badges {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.personal-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.personal-badge svg {
+  color: #2dd4bf;
+  flex-shrink: 0;
+}
+
+.personal-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+  transition: color 0.2s ease;
+  min-height: 44px;
+}
+
+.personal-linkedin:hover {
+  color: #2dd4bf;
+}
+
+.personal-linkedin:focus {
+  outline: 2px solid #2dd4bf;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.personal-linkedin svg {
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.personal-linkedin:hover svg {
+  opacity: 1;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .personal-section {
+    padding: 5rem 0 4rem;
+  }
+
+  .personal-content {
+    padding: 0 calc(var(--page-px) * 2);
+  }
+
+  .personal-name {
+    font-size: 2.5rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .personal-section {
+    padding: 4rem 0 3rem;
+  }
+
+  .personal-content {
+    padding: 0 calc(var(--page-px) * 2);
+  }
+
+  .personal-name {
+    font-size: 2rem;
+    letter-spacing: -0.5px;
+  }
+
+  .personal-tagline {
+    font-size: 1rem;
+  }
+
+  .personal-badges {
+    gap: 1rem;
+  }
+}

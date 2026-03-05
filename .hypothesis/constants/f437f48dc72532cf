@@ -1,0 +1,4 @@
+# file: /Users/mikejan/Desktop/Kiro/personal-website/amplify/backend/function/createCity/src/index.py
+# hypothesis_version: 6.141.1
+
+[100, 201, 400, 500, 1000, '*', 'CITIES_TABLE', 'GEOCODING_ERROR', 'INTERNAL_ERROR', 'INVALID_JSON', 'OPTIONS,POST', 'VALIDATION_ERROR', 'Validation failed', 'Z', 'accommodations', 'bars', 'beforeYouGo', 'body', 'cities', 'code', 'country', 'createdAt', 'data', 'datesVisited', 'dynamodb', 'error', 'googleMapLink', 'gyms', 'headers', 'id', 'latitude', 'longitude', 'message', 'name', 'overview', 'places', 'pointsOfInterest', 'restaurants', 'shared', 'statusCode', 'updatedAt', 'valid', 'validationErrors', '{}']

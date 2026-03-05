@@ -1,0 +1,4 @@
+# file: /Users/mikejan/Desktop/Kiro/personal-website/amplify/backend/function/shared/jwt_middleware.py
+# hypothesis_version: 6.141.1
+
+[401, 403, 500, '*', 'Authorization', 'FORBIDDEN', 'HS256', 'INTERNAL_ERROR', 'INVALID_TOKEN', 'MISSING_TOKEN', 'TOKEN_EXPIRED', 'Token has expired', 'admin', 'authenticateAdmin', 'authorization', 'bearer', 'body', 'code', 'error', 'error_code', 'error_message', 'headers', 'message', 'payload', 'src', 'statusCode', 'status_code', 'valid']

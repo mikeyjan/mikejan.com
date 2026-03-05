@@ -1,0 +1,564 @@
+/**
+ * CityForm component styles
+ * Modern, clean form design
+ */
+
+.city-form {
+  width: 100%;
+}
+
+.city-form-title {
+  margin: 0 0 28px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.02em;
+}
+
+.city-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Section styles */
+.city-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.city-form-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.city-form-section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Field styles */
+.city-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.city-form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.city-form-input,
+.city-form-textarea {
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.city-form-input::placeholder,
+.city-form-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.city-form-input:hover,
+.city-form-textarea:hover {
+  border-color: #cbd5e1;
+}
+
+.city-form-input:focus,
+.city-form-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.city-form-input:disabled,
+.city-form-textarea:disabled {
+  background-color: #f8fafc;
+  cursor: not-allowed;
+  color: #94a3b8;
+}
+
+.city-form-input.error,
+.city-form-textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.city-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.city-form-error {
+  font-size: 13px;
+  color: #ef4444;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.city-form-help-text {
+  font-size: 13px;
+  color: #64748b;
+  margin: 4px 0 0 0;
+}
+
+/* Coordinates section */
+.city-form-coordinates {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.city-form-coordinates-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.city-form-coordinates-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.city-form-toggle-button {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3b82f6;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 40px;
+}
+
+.city-form-toggle-button:hover:not(:disabled) {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+}
+
+.city-form-toggle-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Date input section */
+.city-form-date-input {
+  display: flex;
+  gap: 10px;
+}
+
+.city-form-date-input .city-form-input {
+  flex: 1;
+}
+
+.city-form-add-button {
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  background: #10b981;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  min-height: 44px;
+  box-shadow: 0 1px 2px rgba(16, 185, 129, 0.3);
+}
+
+.city-form-add-button:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.city-form-add-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.city-form-dates-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.city-form-date-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.city-form-remove-button {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  line-height: 1;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.city-form-remove-button:hover:not(:disabled) {
+  background: #ef4444;
+  color: white;
+}
+
+.city-form-remove-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.city-form-success {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  color: #065f46;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.city-form-error-message {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.city-form-info-message {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  color: #1e40af;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Form actions */
+.city-form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.city-form-button {
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.city-form-button-primary {
+  color: white;
+  background: #3b82f6;
+  box-shadow: 0 1px 2px rgba(59, 130, 246, 0.3);
+}
+
+.city-form-button-primary:hover:not(:disabled) {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+.city-form-button-secondary {
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.city-form-button-secondary:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.city-form-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .city-form-title {
+    font-size: 20px;
+  }
+
+  .city-form-section-title {
+    font-size: 15px;
+  }
+
+  .city-form-coordinates-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .city-form-date-input {
+    flex-direction: column;
+  }
+
+  .city-form-actions {
+    flex-direction: column;
+  }
+
+  .city-form-button {
+    width: 100%;
+  }
+
+  .city-form-coordinates-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .city-form-toggle-button {
+    width: 100%;
+  }
+}
+
+
+/* Place input styles */
+.city-form-place-input {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.city-form-places-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.city-form-place-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.city-form-place-item:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.city-form-place-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.city-form-place-title {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.city-form-place-link {
+  font-size: 14px;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.city-form-place-link:hover {
+  opacity: 1;
+}
+
+.city-form-place-notes {
+  font-size: 13px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Mobile responsive for place inputs */
+@media (max-width: 768px) {
+  .city-form-place-input {
+    grid-template-columns: 1fr;
+  }
+
+  .city-form-place-input .city-form-add-button {
+    width: 100%;
+  }
+
+  .city-form-place-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+
+/* Bulk import styles */
+.city-form-bulk-import {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.city-form-bulk-import .city-form-help-text {
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.city-form-bulk-import code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 12px;
+  color: #475569;
+}
+
+.city-form-bulk-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.city-form-bulk-button {
+  margin-top: 12px;
+}
+
+
+.city-form-bulk-success {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #065f46;
+  animation: fadeInSuccess 0.3s ease-out;
+}
+
+@keyframes fadeInSuccess {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Collapsible section styles */
+.city-form-section-collapsible {
+  padding: 0;
+}
+
+.city-form-section-toggle {
+  width: 100%;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+}
+
+.city-form-section-toggle:hover {
+  background: #f8fafc;
+}
+
+.city-form-section-toggle .city-form-section-title {
+  margin: 0;
+}
+
+.city-form-section-chevron {
+  font-size: 12px;
+  color: #64748b;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.city-form-section-chevron.expanded {
+  transform: rotate(180deg);
+}
+
+.city-form-section-content {
+  padding: 0 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: sectionSlideDown 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes sectionSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

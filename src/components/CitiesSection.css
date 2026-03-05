@@ -1,0 +1,133 @@
+/**
+ * Styles for CitiesSection component
+ * Requirements: 2.2-2.5
+ */
+
+.cities-section {
+  width: 100%;
+  padding: 3rem 0 4rem;
+  background: #0a0a0a;
+}
+
+.cities-section-header {
+  text-align: left;
+  margin-bottom: 2rem;
+  padding: 0 var(--page-px);
+}
+
+.cities-section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2dd4bf;
+  margin-bottom: 0.75rem;
+}
+
+.cities-section-label svg {
+  opacity: 0.8;
+}
+
+.cities-section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.cities-section-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.cities-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0 var(--page-px);
+  align-items: center;
+}
+
+/* Segmented control — both options visible at once */
+.view-mode-segmented {
+  display: inline-flex;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.segment-btn {
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.segment-btn:last-child {
+  border-right: none;
+}
+
+.segment-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.segment-btn.active {
+  background-color: rgba(45, 212, 191, 0.12);
+  color: #2dd4bf;
+}
+
+.segment-btn:focus {
+  outline: 2px solid #2dd4bf;
+  outline-offset: -2px;
+}
+
+.cities-content {
+  width: 100%;
+  padding: 0 var(--page-px);
+}
+
+@media (max-width: 768px) {
+  .cities-section {
+    padding: 2rem 0 2.5rem;
+  }
+
+  .cities-section-header {
+    padding: 0 var(--page-px);
+  }
+
+  .cities-section-title {
+    font-size: 1.5rem;
+  }
+
+  .cities-controls {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0 var(--page-px);
+  }
+
+  .cities-content {
+    padding: 0 var(--page-px);
+  }
+
+  .segment-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.78rem;
+  }
+}

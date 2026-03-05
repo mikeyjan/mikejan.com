@@ -1,0 +1,35 @@
+/**
+ * PublicView component styles
+ */
+
+.public-view {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.public-view-loading,
+.public-view-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.public-view-loading p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.public-view-error p {
+  font-size: 1.2rem;
+  color: #d32f2f;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0;
+  width: 100%;
+}

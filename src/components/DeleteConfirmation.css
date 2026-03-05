@@ -1,0 +1,157 @@
+/**
+ * Styles for DeleteConfirmation component
+ * Modern modal design
+ */
+
+/* Overlay background */
+.delete-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Dialog box */
+.delete-confirmation-dialog {
+  background-color: white;
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalSlideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Icon */
+.delete-confirmation-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 24px;
+}
+
+/* Title */
+.delete-confirmation-title {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+}
+
+/* Message */
+.delete-confirmation-message {
+  margin: 0 0 24px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.delete-confirmation-message strong {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Actions container */
+.delete-confirmation-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Buttons */
+.delete-confirmation-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 90px;
+  min-height: 44px;
+}
+
+.delete-confirmation-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Cancel button */
+.delete-confirmation-button-cancel {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.delete-confirmation-button-cancel:hover:not(:disabled) {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+/* Confirm/Delete button */
+.delete-confirmation-button-confirm {
+  background-color: #ef4444;
+  color: white;
+  box-shadow: 0 1px 2px rgba(239, 68, 68, 0.3);
+}
+
+.delete-confirmation-button-confirm:hover:not(:disabled) {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+.delete-confirmation-button-confirm:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .delete-confirmation-dialog {
+    padding: 24px;
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  .delete-confirmation-title {
+    font-size: 17px;
+  }
+
+  .delete-confirmation-message {
+    font-size: 14px;
+  }
+
+  .delete-confirmation-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .delete-confirmation-button {
+    width: 100%;
+  }
+}
