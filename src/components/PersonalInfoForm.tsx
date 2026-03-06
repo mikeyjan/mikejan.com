@@ -11,7 +11,7 @@
  * - Displays success/error messages
  */
 
-import React, { useState, FormEvent, useEffect } from 'react';
+import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import { useData } from '../contexts/DataContext';
 import { UpdatePersonalInfoRequest } from '../types';
 import './PersonalInfoForm.css';
@@ -46,6 +46,26 @@ const PersonalInfoForm: React.FC = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  
+  // Form ref for programmatic submission
+  const formRef = useRef<HTMLFormElement>(null);
+
+  /**
+   * Keyboard shortcut handler (Cmd+S / Ctrl+S to save)
+   */
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault();
+        if (!saving && formRef.current) {
+          formRef.current.requestSubmit();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [saving]);
 
   /**
    * Initialize form with current personal info
@@ -191,7 +211,7 @@ const PersonalInfoForm: React.FC = () => {
     <div className="personal-info-form">
       <h2 className="personal-info-form-title">Edit Personal Information</h2>
       
-      <form onSubmit={handleSubmit} className="personal-info-form-content">
+      <form ref={formRef} onSubmit={handleSubmit} className="personal-info-form-content">
         {/* Name field */}
         <div className="personal-info-form-field">
           <label htmlFor="name" className="personal-info-form-label">

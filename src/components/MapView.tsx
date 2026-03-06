@@ -9,7 +9,7 @@
  * - Implements touch gestures for mobile
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ComposableMap,
   Geographies,
@@ -34,12 +34,33 @@ interface MapViewProps {
  * Requirements: 2.4, 3.1-3.5
  */
 export const MapView: React.FC<MapViewProps> = ({ cities, onCitySelect }) => {
+  const [hoveredCity, setHoveredCity] = useState<City | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
   /**
    * Handle marker click
    * Requirements: 3.2, 5.2
    */
   const handleMarkerClick = (city: City) => {
     onCitySelect(city);
+  };
+
+  /**
+   * Handle marker hover
+   */
+  const handleMarkerHover = (city: City, event: React.MouseEvent) => {
+    const rect = (event.currentTarget as Element).closest('.map-view')?.getBoundingClientRect();
+    if (rect) {
+      setTooltipPosition({
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      });
+    }
+    setHoveredCity(city);
+  };
+
+  const handleMarkerLeave = () => {
+    setHoveredCity(null);
   };
 
   return (
@@ -93,15 +114,30 @@ export const MapView: React.FC<MapViewProps> = ({ cities, onCitySelect }) => {
                 strokeWidth={2}
                 className="city-marker"
                 onClick={() => handleMarkerClick(city)}
+                onMouseEnter={(e) => handleMarkerHover(city, e)}
+                onMouseLeave={handleMarkerLeave}
                 style={{ cursor: 'pointer' }}
                 role="button"
                 aria-label={`${city.name}, ${city.country}`}
               />
-              <title>{city.name}, {city.country}</title>
             </Marker>
           ))}
         </ZoomableGroup>
       </ComposableMap>
+      
+      {/* City name tooltip */}
+      {hoveredCity && (
+        <div 
+          className="map-tooltip"
+          style={{
+            left: tooltipPosition.x,
+            top: tooltipPosition.y
+          }}
+        >
+          <span className="map-tooltip-name">{hoveredCity.name}</span>
+          <span className="map-tooltip-country">{hoveredCity.country}</span>
+        </div>
+      )}
     </div>
   );
 };

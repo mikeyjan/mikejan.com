@@ -418,11 +418,11 @@ describe('TileView', () => {
                 beforeYouGo: fc.string({ maxLength: 50 }),
                 overview: fc.string({ maxLength: 50 }),
                 places: fc.record({
-                  bars: fc.string({ maxLength: 30 }),
-                  restaurants: fc.string({ maxLength: 30 }),
-                  pointsOfInterest: fc.string({ maxLength: 30 }),
-                  gyms: fc.string({ maxLength: 30 }),
-                  accommodations: fc.string({ maxLength: 30 })
+                  bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 })
                 }),
                 createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                   .map((ms: number) => new Date(ms).toISOString()),
@@ -525,11 +525,11 @@ describe('TileView', () => {
                 beforeYouGo: fc.string({ maxLength: 50 }),
                 overview: fc.string({ maxLength: 50 }),
                 places: fc.record({
-                  bars: fc.string({ maxLength: 30 }),
-                  restaurants: fc.string({ maxLength: 30 }),
-                  pointsOfInterest: fc.string({ maxLength: 30 }),
-                  gyms: fc.string({ maxLength: 30 }),
-                  accommodations: fc.string({ maxLength: 30 })
+                  bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 })
                 }),
                 createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                   .map((ms: number) => new Date(ms).toISOString()),

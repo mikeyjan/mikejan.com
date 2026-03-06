@@ -30,7 +30,7 @@ type AdminView = 'dashboard' | 'editCity' | 'createCity';
  */
 export const AdminPanel: React.FC = () => {
   const { logout } = useAuth();
-  const { cities, deleteCity } = useData();
+  const { deleteCity } = useData();
   
   // View state
   const [currentView, setCurrentView] = useState<AdminView>('dashboard');

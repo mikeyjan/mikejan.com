@@ -11,9 +11,9 @@
  * - Handles geocoding failures with manual coordinate option
  */
 
-import React, { useState, FormEvent, useEffect } from 'react';
+import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import { useData } from '../contexts/DataContext';
-import { CreateCityRequest, UpdateCityRequest, City, PlacesCategories, Place } from '../types';
+import { CreateCityRequest, City, PlacesCategories, Place } from '../types';
 import './CityForm.css';
 
 /**
@@ -102,6 +102,26 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
   // Collapsible section state (collapsed by default in edit mode)
   const [isBasicInfoExpanded, setIsBasicInfoExpanded] = useState(!city);
   const [isContentExpanded, setIsContentExpanded] = useState(!city);
+  
+  // Form ref for programmatic submission
+  const formRef = useRef<HTMLFormElement>(null);
+
+  /**
+   * Keyboard shortcut handler (Cmd+S / Ctrl+S to save)
+   */
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+        e.preventDefault();
+        if (!saving && !geocoding && formRef.current) {
+          formRef.current.requestSubmit();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [saving, geocoding]);
 
   /**
    * Initialize form with city data in edit mode
@@ -563,7 +583,7 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
         {isEditMode ? 'Edit City' : 'Add New City'}
       </h2>
       
-      <form onSubmit={handleSubmit} className="city-form-content">
+      <form ref={formRef} onSubmit={handleSubmit} className="city-form-content">
         {/* Basic Information Section */}
         <div className={`city-form-section ${isEditMode ? 'city-form-section-collapsible' : ''}`}>
           {isEditMode ? (

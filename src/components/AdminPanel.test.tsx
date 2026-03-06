@@ -22,11 +22,11 @@ const mockCities: City[] = [
     beforeYouGo: 'Learn basic Japanese',
     overview: 'A vibrant metropolis',
     places: {
-      bars: 'Golden Gai',
-      restaurants: 'Sukiyabashi Jiro',
-      pointsOfInterest: 'Tokyo Tower',
-      gyms: 'Anytime Fitness',
-      accommodations: 'Park Hyatt'
+      bars: [{ title: 'Golden Gai' }],
+      restaurants: [{ title: 'Sukiyabashi Jiro' }],
+      pointsOfInterest: [{ title: 'Tokyo Tower' }],
+      gyms: [{ title: 'Anytime Fitness' }],
+      accommodations: [{ title: 'Park Hyatt' }]
     },
     createdAt: '2024-01-01T00:00:00Z',
     updatedAt: '2024-01-01T00:00:00Z'
@@ -42,11 +42,11 @@ const mockCities: City[] = [
     beforeYouGo: 'Learn some French',
     overview: 'The City of Light',
     places: {
-      bars: 'Le Bar',
-      restaurants: 'Le Jules Verne',
-      pointsOfInterest: 'Eiffel Tower',
-      gyms: 'Fitness Park',
-      accommodations: 'Hotel Plaza'
+      bars: [{ title: 'Le Bar' }],
+      restaurants: [{ title: 'Le Jules Verne' }],
+      pointsOfInterest: [{ title: 'Eiffel Tower' }],
+      gyms: [{ title: 'Fitness Park' }],
+      accommodations: [{ title: 'Hotel Plaza' }]
     },
     createdAt: '2024-01-01T00:00:00Z',
     updatedAt: '2024-01-01T00:00:00Z'

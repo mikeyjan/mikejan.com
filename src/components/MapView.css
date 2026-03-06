@@ -41,3 +41,46 @@
     border-radius: 4px;
   }
 }
+
+
+/* City name tooltip */
+.map-tooltip {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  margin-top: -12px;
+  background: rgba(17, 17, 17, 0.95);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  animation: tooltipFadeIn 0.15s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -90%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%);
+  }
+}
+
+.map-tooltip-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.map-tooltip-country {
+  font-size: 0.75rem;
+  color: var(--color-primary, #2dd4bf);
+  white-space: nowrap;
+}

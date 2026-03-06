@@ -141,7 +141,7 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
               rel="noopener noreferrer"
               className="overlay-map-link"
             >
-              🗺️ View on Google Maps
+              Custom Google Map
             </a>
           )}
         </header>
@@ -178,8 +178,8 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
           
           {/* Bars */}
           {cityDetails.places.bars?.length > 0 && (
-            <div className="overlay-category">
-              <h3 className="overlay-category-title">Bars</h3>
+            <div className="overlay-category overlay-category-bars">
+              <h3 className="overlay-category-title">BARS</h3>
               {cityDetails.places.bars.map((place, i) => (
                 <div key={i} className="overlay-place-item">
                   {place.link
@@ -193,8 +193,8 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
 
           {/* Restaurants */}
           {cityDetails.places.restaurants?.length > 0 && (
-            <div className="overlay-category">
-              <h3 className="overlay-category-title">Restaurants</h3>
+            <div className="overlay-category overlay-category-restaurants">
+              <h3 className="overlay-category-title">RESTAURANTS</h3>
               {cityDetails.places.restaurants.map((place, i) => (
                 <div key={i} className="overlay-place-item">
                   {place.link
@@ -208,8 +208,8 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
 
           {/* Points of Interest */}
           {cityDetails.places.pointsOfInterest?.length > 0 && (
-            <div className="overlay-category">
-              <h3 className="overlay-category-title">Points of Interest</h3>
+            <div className="overlay-category overlay-category-poi">
+              <h3 className="overlay-category-title">POINTS OF INTEREST</h3>
               {cityDetails.places.pointsOfInterest.map((place, i) => (
                 <div key={i} className="overlay-place-item">
                   {place.link
@@ -223,8 +223,8 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
 
           {/* Gyms */}
           {cityDetails.places.gyms?.length > 0 && (
-            <div className="overlay-category">
-              <h3 className="overlay-category-title">Gyms</h3>
+            <div className="overlay-category overlay-category-gyms">
+              <h3 className="overlay-category-title">GYMS</h3>
               {cityDetails.places.gyms.map((place, i) => (
                 <div key={i} className="overlay-place-item">
                   {place.link
@@ -238,8 +238,8 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
 
           {/* Accommodations */}
           {cityDetails.places.accommodations?.length > 0 && (
-            <div className="overlay-category">
-              <h3 className="overlay-category-title">Accommodations</h3>
+            <div className="overlay-category overlay-category-accommodations">
+              <h3 className="overlay-category-title">ACCOMMODATIONS</h3>
               {cityDetails.places.accommodations.map((place, i) => (
                 <div key={i} className="overlay-place-item">
                   {place.link

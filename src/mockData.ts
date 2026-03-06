@@ -26,11 +26,11 @@ export const mockCities: City[] = [
     beforeYouGo: 'Learn some basic French phrases. The metro is the best way to get around. Book museums in advance.',
     overview: 'The City of Light offers world-class museums, iconic architecture, and incredible cuisine. From the Eiffel Tower to charming cafes, Paris never disappoints.',
     places: {
-      bars: 'Le Comptoir Général, Candelaria, Little Red Door',
-      restaurants: 'L\'Ami Jean, Septime, Le Chateaubriand',
-      pointsOfInterest: 'Eiffel Tower, Louvre Museum, Notre-Dame, Sacré-Cœur, Arc de Triomphe',
-      gyms: 'Basic-Fit, Fitness Park',
-      accommodations: 'Hotel de Crillon, Le Bristol Paris'
+      bars: [{ title: 'Le Comptoir Général' }, { title: 'Candelaria' }, { title: 'Little Red Door' }],
+      restaurants: [{ title: 'L\'Ami Jean' }, { title: 'Septime' }, { title: 'Le Chateaubriand' }],
+      pointsOfInterest: [{ title: 'Eiffel Tower' }, { title: 'Louvre Museum' }, { title: 'Notre-Dame' }, { title: 'Sacré-Cœur' }, { title: 'Arc de Triomphe' }],
+      gyms: [{ title: 'Basic-Fit' }, { title: 'Fitness Park' }],
+      accommodations: [{ title: 'Hotel de Crillon' }, { title: 'Le Bristol Paris' }]
     },
     createdAt: '2023-01-01T00:00:00Z',
     updatedAt: '2023-09-21T00:00:00Z'
@@ -46,11 +46,11 @@ export const mockCities: City[] = [
     beforeYouGo: 'Get a JR Pass for train travel. Download Google Translate. Cash is still king in many places.',
     overview: 'A fascinating blend of ultra-modern and traditional. Tokyo offers everything from ancient temples to cutting-edge technology, incredible food, and unique culture.',
     places: {
-      bars: 'Golden Gai, Bar High Five, Gen Yamamoto',
-      restaurants: 'Sukiyabashi Jiro, Narisawa, Den',
-      pointsOfInterest: 'Senso-ji Temple, Shibuya Crossing, Meiji Shrine, Tokyo Skytree, Tsukiji Market',
-      gyms: 'Gold\'s Gym, Anytime Fitness',
-      accommodations: 'Park Hyatt Tokyo, Aman Tokyo'
+      bars: [{ title: 'Golden Gai' }, { title: 'Bar High Five' }, { title: 'Gen Yamamoto' }],
+      restaurants: [{ title: 'Sukiyabashi Jiro' }, { title: 'Narisawa' }, { title: 'Den' }],
+      pointsOfInterest: [{ title: 'Senso-ji Temple' }, { title: 'Shibuya Crossing' }, { title: 'Meiji Shrine' }, { title: 'Tokyo Skytree' }, { title: 'Tsukiji Market' }],
+      gyms: [{ title: 'Gold\'s Gym' }, { title: 'Anytime Fitness' }],
+      accommodations: [{ title: 'Park Hyatt Tokyo' }, { title: 'Aman Tokyo' }]
     },
     createdAt: '2023-02-01T00:00:00Z',
     updatedAt: '2023-03-11T00:00:00Z'
@@ -66,11 +66,11 @@ export const mockCities: City[] = [
     beforeYouGo: 'Book Sagrada Familia tickets weeks in advance. Learn basic Spanish. Beware of pickpockets in tourist areas.',
     overview: 'Gaudí\'s architectural masterpieces, beautiful beaches, vibrant nightlife, and delicious tapas make Barcelona an unforgettable destination.',
     places: {
-      bars: 'Paradiso, Dr. Stravinsky, Bobby\'s Free',
-      restaurants: 'Tickets, Disfrutar, Moments',
-      pointsOfInterest: 'Sagrada Familia, Park Güell, La Rambla, Gothic Quarter, Casa Batlló',
-      gyms: 'DiR, Holmes Place',
-      accommodations: 'Hotel Arts Barcelona, Mandarin Oriental'
+      bars: [{ title: 'Paradiso' }, { title: 'Dr. Stravinsky' }, { title: 'Bobby\'s Free' }],
+      restaurants: [{ title: 'Tickets' }, { title: 'Disfrutar' }, { title: 'Moments' }],
+      pointsOfInterest: [{ title: 'Sagrada Familia' }, { title: 'Park Güell' }, { title: 'La Rambla' }, { title: 'Gothic Quarter' }, { title: 'Casa Batlló' }],
+      gyms: [{ title: 'DiR' }, { title: 'Holmes Place' }],
+      accommodations: [{ title: 'Hotel Arts Barcelona' }, { title: 'Mandarin Oriental' }]
     },
     createdAt: '2023-06-01T00:00:00Z',
     updatedAt: '2023-07-13T00:00:00Z'

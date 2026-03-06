@@ -1,9 +1,27 @@
 .personal-section {
   width: 100%;
   padding: 7rem 0 6rem;
-  background: #0a0a0a;
+  background: var(--color-bg, #0a0a0a);
   display: flex;
   align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background gradient */
+.personal-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(45, 212, 191, 0.03) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
 .personal-content {
@@ -11,30 +29,43 @@
   width: 100%;
   text-align: left;
   padding: 0 calc(var(--page-px) * 2);
+  position: relative;
+  z-index: 1;
 }
 
 .personal-name {
-  font-size: 3.5rem;
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 4rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 0.75rem 0;
-  line-height: 1.1;
-  letter-spacing: -1px;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  animation: fadeInUp 0.6s ease-out backwards;
+  animation-delay: 0.1s;
 }
 
 .personal-tagline {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: #2dd4bf;
+  font-family: var(--font-body, inherit);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--color-primary, #2dd4bf);
   margin: 0 0 1.75rem 0;
   line-height: 1.4;
+  letter-spacing: 0.01em;
+  animation: fadeInUp 0.6s ease-out backwards;
+  animation-delay: 0.2s;
 }
 
 .personal-description {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-body, inherit);
+  font-size: 1rem;
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.55));
   margin: 0 0 1.25rem 0;
-  line-height: 1.75;
+  line-height: 1.8;
+  max-width: 600px;
+  animation: fadeInUp 0.6s ease-out backwards;
+  animation-delay: 0.3s;
 }
 
 .personal-badges {
@@ -42,50 +73,93 @@
   gap: 1.5rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
+  animation: fadeInUp 0.6s ease-out backwards;
+  animation-delay: 0.4s;
 }
 
 .personal-badge {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  font-family: var(--font-body, inherit);
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.45));
+  transition: color var(--transition-fast, 0.15s ease);
+}
+
+.personal-badge:hover {
+  color: var(--color-text, rgba(255, 255, 255, 0.8));
 }
 
 .personal-badge svg {
-  color: #2dd4bf;
+  color: var(--color-primary, #2dd4bf);
   flex-shrink: 0;
+  transition: transform var(--transition-fast, 0.15s ease);
+}
+
+.personal-badge:hover svg {
+  transform: scale(1.1);
 }
 
 .personal-linkedin {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.45));
   text-decoration: none;
+  font-family: var(--font-body, inherit);
   font-size: 0.9rem;
-  font-weight: 400;
-  transition: color 0.2s ease;
+  font-weight: 500;
   min-height: 44px;
+  padding: 0.5rem 0;
+  position: relative;
+  animation: fadeInUp 0.6s ease-out backwards;
+  animation-delay: 0.5s;
+  
+  /* Smooth transitions */
+  transition: 
+    color var(--transition-base, 0.25s ease),
+    transform var(--transition-fast, 0.15s ease);
+}
+
+/* Underline animation */
+.personal-linkedin::after {
+  content: '';
+  position: absolute;
+  bottom: 0.4rem;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-primary, #2dd4bf);
+  transition: width var(--transition-base, 0.25s ease);
 }
 
 .personal-linkedin:hover {
-  color: #2dd4bf;
+  color: var(--color-primary, #2dd4bf);
+  transform: translateX(4px);
+}
+
+.personal-linkedin:hover::after {
+  width: 100%;
 }
 
 .personal-linkedin:focus {
-  outline: 2px solid #2dd4bf;
+  outline: 2px solid var(--color-primary, #2dd4bf);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
 .personal-linkedin svg {
   opacity: 0.6;
-  transition: opacity 0.2s ease;
+  transition: 
+    opacity var(--transition-fast, 0.15s ease),
+    transform var(--transition-fast, 0.15s ease);
 }
 
 .personal-linkedin:hover svg {
   opacity: 1;
+  transform: scale(1.1);
 }
 
 /* Tablet */
@@ -99,7 +173,12 @@
   }
 
   .personal-name {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
+    letter-spacing: -1px;
+  }
+  
+  .personal-tagline {
+    font-size: 1.05rem;
   }
 }
 
@@ -114,7 +193,7 @@
   }
 
   .personal-name {
-    font-size: 2rem;
+    font-size: 2.25rem;
     letter-spacing: -0.5px;
   }
 

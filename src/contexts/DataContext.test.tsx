@@ -74,11 +74,11 @@ const mockCity: City = {
   beforeYouGo: 'Learn basic Japanese phrases',
   overview: 'Amazing city with great food',
   places: {
-    bars: 'Golden Gai',
-    restaurants: 'Sukiyabashi Jiro',
-    pointsOfInterest: 'Senso-ji Temple',
-    gyms: 'Gold\'s Gym',
-    accommodations: 'Park Hyatt'
+    bars: [{ title: 'Golden Gai' }],
+    restaurants: [{ title: 'Sukiyabashi Jiro' }],
+    pointsOfInterest: [{ title: 'Senso-ji Temple' }],
+    gyms: [{ title: 'Gold\'s Gym' }],
+    accommodations: [{ title: 'Park Hyatt' }]
   },
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z'

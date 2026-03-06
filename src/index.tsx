@@ -4,6 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Enforce HTTPS in production
+if (
+  process.env.NODE_ENV === 'production' &&
+  window.location.protocol === 'http:' &&
+  !window.location.hostname.includes('localhost')
+) {
+  window.location.href = window.location.href.replace('http:', 'https:');
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

@@ -72,11 +72,11 @@ const cityArbitrary = fc.record({
   beforeYouGo: fc.string({ maxLength: 100 }),
   overview: fc.string({ maxLength: 100 }),
   places: fc.record({
-    bars: fc.string({ maxLength: 50 }),
-    restaurants: fc.string({ maxLength: 50 }),
-    pointsOfInterest: fc.string({ maxLength: 50 }),
-    gyms: fc.string({ maxLength: 50 }),
-    accommodations: fc.string({ maxLength: 50 })
+    bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+    restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+    pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+    gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+    accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 })
   }),
   createdAt: fc.integer({ min: 946684800000, max: 1893456000000 }).map(ms => new Date(ms).toISOString()),
   updatedAt: fc.integer({ min: 946684800000, max: 1893456000000 }).map(ms => new Date(ms).toISOString())

@@ -48,12 +48,11 @@ export const CitiesSection: React.FC<CitiesSectionProps> = ({
             <line x1="2" y1="12" x2="22" y2="12"/>
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
           </svg>
-          Adventures
+          Recs for Places I've Been
         </div>
-        <h2 className="cities-section-title">Places I've Been</h2>
-        <p className="cities-section-subtitle">
+        {/* <p className="cities-section-subtitle">
           {cities.length} {cities.length === 1 ? 'city' : 'cities'} across the world
-        </p>
+        </p> */}
       </div>
 
       <div className="cities-controls">

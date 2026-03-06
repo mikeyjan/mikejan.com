@@ -80,11 +80,11 @@ describe('Responsive Layout Property Tests', () => {
         beforeYouGo: 'Learn basic Japanese phrases.',
         overview: 'Tokyo is a vibrant metropolis.',
         places: {
-          bars: 'Golden Gai',
-          restaurants: 'Sukiyabashi Jiro',
-          pointsOfInterest: 'Senso-ji Temple',
-          gyms: 'Gold\'s Gym Harajuku',
-          accommodations: 'Park Hyatt Tokyo'
+          bars: [{ title: 'Golden Gai' }],
+          restaurants: [{ title: 'Sukiyabashi Jiro' }],
+          pointsOfInterest: [{ title: 'Senso-ji Temple' }],
+          gyms: [{ title: 'Gold\'s Gym Harajuku' }],
+          accommodations: [{ title: 'Park Hyatt Tokyo' }]
         },
         createdAt: '2023-01-01T00:00:00Z',
         updatedAt: '2023-01-01T00:00:00Z'
@@ -162,11 +162,11 @@ describe('Responsive Layout Property Tests', () => {
           beforeYouGo: 'Learn basic Japanese.',
           overview: 'Tokyo is vibrant.',
           places: {
-            bars: 'Golden Gai',
-            restaurants: 'Sukiyabashi Jiro',
-            pointsOfInterest: 'Senso-ji Temple',
-            gyms: 'Gold\'s Gym',
-            accommodations: 'Park Hyatt'
+            bars: [{ title: 'Golden Gai' }],
+            restaurants: [{ title: 'Sukiyabashi Jiro' }],
+            pointsOfInterest: [{ title: 'Senso-ji Temple' }],
+            gyms: [{ title: 'Gold\'s Gym' }],
+            accommodations: [{ title: 'Park Hyatt' }]
           },
           createdAt: '2023-01-01T00:00:00Z',
           updatedAt: '2023-01-01T00:00:00Z'
@@ -182,11 +182,11 @@ describe('Responsive Layout Property Tests', () => {
           beforeYouGo: 'Learn basic French.',
           overview: 'Paris is beautiful.',
           places: {
-            bars: 'Le Bar',
-            restaurants: 'Le Restaurant',
-            pointsOfInterest: 'Eiffel Tower',
-            gyms: 'Fitness Park',
-            accommodations: 'Hotel Plaza'
+            bars: [{ title: 'Le Bar' }],
+            restaurants: [{ title: 'Le Restaurant' }],
+            pointsOfInterest: [{ title: 'Eiffel Tower' }],
+            gyms: [{ title: 'Fitness Park' }],
+            accommodations: [{ title: 'Hotel Plaza' }]
           },
           createdAt: '2023-01-01T00:00:00Z',
           updatedAt: '2023-01-01T00:00:00Z'
@@ -266,11 +266,11 @@ describe('Responsive Layout Property Tests', () => {
           beforeYouGo: 'Learn basic Japanese.',
           overview: 'Tokyo is vibrant.',
           places: {
-            bars: 'Golden Gai',
-            restaurants: 'Sukiyabashi Jiro',
-            pointsOfInterest: 'Senso-ji Temple',
-            gyms: 'Gold\'s Gym',
-            accommodations: 'Park Hyatt'
+            bars: [{ title: 'Golden Gai' }],
+            restaurants: [{ title: 'Sukiyabashi Jiro' }],
+            pointsOfInterest: [{ title: 'Senso-ji Temple' }],
+            gyms: [{ title: 'Gold\'s Gym' }],
+            accommodations: [{ title: 'Park Hyatt' }]
           },
           createdAt: '2023-01-01T00:00:00Z',
           updatedAt: '2023-01-01T00:00:00Z'
@@ -323,11 +323,11 @@ describe('Responsive Layout Property Tests', () => {
           beforeYouGo: 'Learn basic Japanese.',
           overview: 'Tokyo is vibrant.',
           places: {
-            bars: 'Golden Gai',
-            restaurants: 'Sukiyabashi Jiro',
-            pointsOfInterest: 'Senso-ji Temple',
-            gyms: 'Gold\'s Gym',
-            accommodations: 'Park Hyatt'
+            bars: [{ title: 'Golden Gai' }],
+            restaurants: [{ title: 'Sukiyabashi Jiro' }],
+            pointsOfInterest: [{ title: 'Senso-ji Temple' }],
+            gyms: [{ title: 'Gold\'s Gym' }],
+            accommodations: [{ title: 'Park Hyatt' }]
           },
           createdAt: '2023-01-01T00:00:00Z',
           updatedAt: '2023-01-01T00:00:00Z'
@@ -343,11 +343,11 @@ describe('Responsive Layout Property Tests', () => {
           beforeYouGo: 'Learn basic French.',
           overview: 'Paris is beautiful.',
           places: {
-            bars: 'Le Bar',
-            restaurants: 'Le Restaurant',
-            pointsOfInterest: 'Eiffel Tower',
-            gyms: 'Fitness Park',
-            accommodations: 'Hotel Plaza'
+            bars: [{ title: 'Le Bar' }],
+            restaurants: [{ title: 'Le Restaurant' }],
+            pointsOfInterest: [{ title: 'Eiffel Tower' }],
+            gyms: [{ title: 'Fitness Park' }],
+            accommodations: [{ title: 'Hotel Plaza' }]
           },
           createdAt: '2023-01-01T00:00:00Z',
           updatedAt: '2023-01-01T00:00:00Z'
@@ -396,11 +396,11 @@ describe('Responsive Layout Property Tests', () => {
           beforeYouGo: 'Learn basic Japanese.',
           overview: 'Tokyo is vibrant.',
           places: {
-            bars: 'Golden Gai',
-            restaurants: 'Sukiyabashi Jiro',
-            pointsOfInterest: 'Senso-ji Temple',
-            gyms: 'Gold\'s Gym',
-            accommodations: 'Park Hyatt'
+            bars: [{ title: 'Golden Gai' }],
+            restaurants: [{ title: 'Sukiyabashi Jiro' }],
+            pointsOfInterest: [{ title: 'Senso-ji Temple' }],
+            gyms: [{ title: 'Gold\'s Gym' }],
+            accommodations: [{ title: 'Park Hyatt' }]
           },
           createdAt: '2023-01-01T00:00:00Z',
           updatedAt: '2023-01-01T00:00:00Z'

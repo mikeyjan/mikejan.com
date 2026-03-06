@@ -309,11 +309,11 @@ describe('CityForm', () => {
       beforeYouGo: 'Learn basic Japanese greetings',
       overview: 'A vibrant metropolis blending tradition and modernity',
       places: {
-        bars: 'Golden Gai',
-        restaurants: 'Sukiyabashi Jiro',
-        pointsOfInterest: 'Tokyo Tower, Senso-ji Temple',
-        gyms: 'Anytime Fitness',
-        accommodations: 'Park Hyatt Tokyo'
+        bars: [{ title: 'Golden Gai' }],
+        restaurants: [{ title: 'Sukiyabashi Jiro' }],
+        pointsOfInterest: [{ title: 'Tokyo Tower' }, { title: 'Senso-ji Temple' }],
+        gyms: [{ title: 'Anytime Fitness' }],
+        accommodations: [{ title: 'Park Hyatt Tokyo' }]
       }
     };
 

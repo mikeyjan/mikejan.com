@@ -22,7 +22,6 @@ import {
   CreateCityResponse,
   UpdateCityRequest,
   UpdateCityResponse,
-  DeleteCityResponse,
   ApiErrorResponse
 } from '../types';
 import { useAuth } from './AuthContext';
