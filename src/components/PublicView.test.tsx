@@ -51,10 +51,9 @@ jest.mock('./CitiesSection', () => ({
 }));
 
 jest.mock('./CityOverlay', () => ({
-  CityOverlay: ({ city, viewMode, onClose }: any) => (
+  CityOverlay: ({ city, onClose }: any) => (
     <div data-testid="city-overlay">
       <h2>{city.name}</h2>
-      <p>View Mode: {viewMode}</p>
       <button onClick={onClose}>Close Overlay</button>
     </div>
   )
@@ -82,11 +81,11 @@ describe('PublicView Integration Tests', () => {
       beforeYouGo: 'Learn some basic French phrases',
       overview: 'The City of Light',
       places: {
-        bars: 'Le Bar',
-        restaurants: 'Le Restaurant',
-        pointsOfInterest: 'Eiffel Tower',
-        gyms: 'Paris Gym',
-        accommodations: 'Hotel Paris'
+        bars: [{ title: 'Le Bar' }],
+        restaurants: [{ title: 'Le Restaurant' }],
+        pointsOfInterest: [{ title: 'Eiffel Tower' }],
+        gyms: [{ title: 'Paris Gym' }],
+        accommodations: [{ title: 'Hotel Paris' }]
       },
       createdAt: '2023-01-01T00:00:00Z',
       updatedAt: '2023-01-01T00:00:00Z'
@@ -102,11 +101,11 @@ describe('PublicView Integration Tests', () => {
       beforeYouGo: 'Get an Oyster card',
       overview: 'Historic capital',
       places: {
-        bars: 'The Pub',
-        restaurants: 'British Restaurant',
-        pointsOfInterest: 'Big Ben',
-        gyms: 'London Gym',
-        accommodations: 'London Hotel'
+        bars: [{ title: 'The Pub' }],
+        restaurants: [{ title: 'British Restaurant' }],
+        pointsOfInterest: [{ title: 'Big Ben' }],
+        gyms: [{ title: 'London Gym' }],
+        accommodations: [{ title: 'London Hotel' }]
       },
       createdAt: '2023-02-01T00:00:00Z',
       updatedAt: '2023-02-01T00:00:00Z'
@@ -122,11 +121,11 @@ describe('PublicView Integration Tests', () => {
       beforeYouGo: 'Get a JR Pass',
       overview: 'Modern metropolis',
       places: {
-        bars: 'Tokyo Bar',
-        restaurants: 'Sushi Restaurant',
-        pointsOfInterest: 'Shibuya Crossing',
-        gyms: 'Tokyo Gym',
-        accommodations: 'Tokyo Hotel'
+        bars: [{ title: 'Tokyo Bar' }],
+        restaurants: [{ title: 'Sushi Restaurant' }],
+        pointsOfInterest: [{ title: 'Shibuya Crossing' }],
+        gyms: [{ title: 'Tokyo Gym' }],
+        accommodations: [{ title: 'Tokyo Hotel' }]
       },
       createdAt: '2023-03-01T00:00:00Z',
       updatedAt: '2023-03-01T00:00:00Z'
@@ -372,15 +371,16 @@ describe('PublicView Integration Tests', () => {
       const parisButton = screen.getByText('Paris');
       fireEvent.click(parisButton);
 
-      // Verify overlay shows tile view mode
-      expect(screen.getByText('View Mode: tile')).toBeInTheDocument();
+      // Verify overlay is displayed with city name
+      expect(screen.getByTestId('city-overlay')).toBeInTheDocument();
+      expect(screen.getByText('Paris', { selector: 'h2' })).toBeInTheDocument();
     });
 
     /**
      * Test: Closing overlay returns to previous state
      * Requirements: 5.10
      */
-    it('should close overlay and return to previous view state', () => {
+    it('should close overlay and return to previous view state', async () => {
       render(<PublicView />);
 
       // Open overlay
@@ -392,8 +392,10 @@ describe('PublicView Integration Tests', () => {
       const closeButton = screen.getByText('Close Overlay');
       fireEvent.click(closeButton);
 
-      // Overlay should be gone
-      expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      // Overlay should be gone after animation delay
+      await waitFor(() => {
+        expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
 
       // Cities section should still be visible
       expect(screen.getByTestId('cities-section')).toBeInTheDocument();
@@ -406,7 +408,7 @@ describe('PublicView Integration Tests', () => {
      * Test: Complete user flow - view cities → click city → view overlay → close
      * Requirements: 2.1-5.10
      */
-    it('should handle complete user flow from viewing cities to closing overlay', () => {
+    it('should handle complete user flow from viewing cities to closing overlay', async () => {
       render(<PublicView />);
 
       // Step 1: View cities in tile view (default)
@@ -422,14 +424,15 @@ describe('PublicView Integration Tests', () => {
       // Step 3: View overlay
       expect(screen.getByTestId('city-overlay')).toBeInTheDocument();
       expect(screen.getByText('Tokyo', { selector: 'h2' })).toBeInTheDocument();
-      expect(screen.getByText('View Mode: tile')).toBeInTheDocument();
 
       // Step 4: Close overlay
       const closeButton = screen.getByText('Close Overlay');
       fireEvent.click(closeButton);
 
-      // Step 5: Verify return to previous state
-      expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      // Step 5: Verify return to previous state (wait for animation)
+      await waitFor(() => {
+        expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
       expect(screen.getByTestId('cities-section')).toBeInTheDocument();
       expect(screen.getByTestId('view-mode')).toHaveTextContent('tile');
     });
@@ -438,7 +441,7 @@ describe('PublicView Integration Tests', () => {
      * Test: User flow with view mode switching and city selection
      * Requirements: 2.2, 2.5, 5.1, 5.2, 5.3
      */
-    it('should handle view mode switching before and after city selection', () => {
+    it('should handle view mode switching before and after city selection', async () => {
       render(<PublicView />);
 
       // Start in tile view
@@ -453,15 +456,18 @@ describe('PublicView Integration Tests', () => {
       const parisButton = screen.getByText('Paris');
       fireEvent.click(parisButton);
 
-      // Verify overlay shows map view mode
+      // Verify overlay is displayed
       expect(screen.getByTestId('city-overlay')).toBeInTheDocument();
-      expect(screen.getByText('View Mode: map')).toBeInTheDocument();
+      expect(screen.getByText('Paris', { selector: 'h2' })).toBeInTheDocument();
 
       // Close overlay
       const closeButton = screen.getByText('Close Overlay');
       fireEvent.click(closeButton);
 
-      // Verify still in map view
+      // Wait for animation and verify still in map view
+      await waitFor(() => {
+        expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
       expect(screen.getByTestId('view-mode')).toHaveTextContent('map');
     });
 
@@ -499,24 +505,28 @@ describe('PublicView Integration Tests', () => {
      * Test: Multiple city selections in sequence
      * Requirements: 5.1, 5.10
      */
-    it('should handle multiple city selections in sequence', () => {
+    it('should handle multiple city selections in sequence', async () => {
       render(<PublicView />);
 
       // Select first city
       fireEvent.click(screen.getByText('Paris'));
       expect(screen.getByText('Paris', { selector: 'h2' })).toBeInTheDocument();
 
-      // Close overlay
+      // Close overlay and wait
       fireEvent.click(screen.getByText('Close Overlay'));
-      expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
 
       // Select second city
       fireEvent.click(screen.getByText('London'));
       expect(screen.getByText('London', { selector: 'h2' })).toBeInTheDocument();
 
-      // Close overlay
+      // Close overlay and wait
       fireEvent.click(screen.getByText('Close Overlay'));
-      expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
 
       // Select third city
       fireEvent.click(screen.getByText('Tokyo'));
@@ -527,7 +537,7 @@ describe('PublicView Integration Tests', () => {
      * Test: Complex flow with multiple state changes
      * Requirements: 2.2, 2.5, 4.2, 4.6, 5.1, 5.10
      */
-    it('should handle complex user flow with multiple state changes', () => {
+    it('should handle complex user flow with multiple state changes', async () => {
       render(<PublicView />);
 
       // 1. Start in tile view with date sorting
@@ -545,11 +555,13 @@ describe('PublicView Integration Tests', () => {
       // 4. Select a city
       fireEvent.click(screen.getByText('Paris'));
       expect(screen.getByTestId('city-overlay')).toBeInTheDocument();
-      expect(screen.getByText('View Mode: map')).toBeInTheDocument();
+      expect(screen.getByText('Paris', { selector: 'h2' })).toBeInTheDocument();
 
-      // 5. Close overlay
+      // 5. Close overlay and wait
       fireEvent.click(screen.getByText('Close Overlay'));
-      expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
 
       // 6. Verify all state is preserved
       expect(screen.getByTestId('view-mode')).toHaveTextContent('map');
@@ -562,7 +574,7 @@ describe('PublicView Integration Tests', () => {
       // 8. Select another city
       fireEvent.click(screen.getByText('Tokyo'));
       expect(screen.getByTestId('city-overlay')).toBeInTheDocument();
-      expect(screen.getByText('View Mode: tile')).toBeInTheDocument();
+      expect(screen.getByText('Tokyo', { selector: 'h2' })).toBeInTheDocument();
     });
   });
 
@@ -667,16 +679,18 @@ describe('PublicView Integration Tests', () => {
      * Test: Overlay closes when selecting same city again
      * Requirements: 5.10
      */
-    it('should allow reopening overlay for the same city', () => {
+    it('should allow reopening overlay for the same city', async () => {
       render(<PublicView />);
 
       // Open overlay for Paris
       fireEvent.click(screen.getByText('Paris'));
       expect(screen.getByTestId('city-overlay')).toBeInTheDocument();
 
-      // Close overlay
+      // Close overlay and wait
       fireEvent.click(screen.getByText('Close Overlay'));
-      expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.queryByTestId('city-overlay')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
 
       // Open overlay for Paris again
       fireEvent.click(screen.getByText('Paris'));

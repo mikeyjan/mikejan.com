@@ -54,3 +54,10 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# Python virtual environments
+myenv/
+venv/
+.venv/
+__pycache__/
+*.pyc

@@ -44,11 +44,11 @@ describe('CitiesSection', () => {
       beforeYouGo: 'Tips',
       overview: 'Overview',
       places: {
-        bars: 'Bar 1',
-        restaurants: 'Restaurant 1',
-        pointsOfInterest: 'POI 1',
-        gyms: 'Gym 1',
-        accommodations: 'Hotel 1'
+        bars: [{ title: 'Bar 1' }],
+        restaurants: [{ title: 'Restaurant 1' }],
+        pointsOfInterest: [{ title: 'POI 1' }],
+        gyms: [{ title: 'Gym 1' }],
+        accommodations: [{ title: 'Hotel 1' }]
       },
       createdAt: '2023-01-01T00:00:00Z',
       updatedAt: '2023-01-01T00:00:00Z'
@@ -64,11 +64,11 @@ describe('CitiesSection', () => {
       beforeYouGo: 'Tips',
       overview: 'Overview',
       places: {
-        bars: 'Bar 2',
-        restaurants: 'Restaurant 2',
-        pointsOfInterest: 'POI 2',
-        gyms: 'Gym 2',
-        accommodations: 'Hotel 2'
+        bars: [{ title: 'Bar 2' }],
+        restaurants: [{ title: 'Restaurant 2' }],
+        pointsOfInterest: [{ title: 'POI 2' }],
+        gyms: [{ title: 'Gym 2' }],
+        accommodations: [{ title: 'Hotel 2' }]
       },
       createdAt: '2023-02-01T00:00:00Z',
       updatedAt: '2023-02-01T00:00:00Z'
@@ -99,7 +99,7 @@ describe('CitiesSection', () => {
       />
     );
 
-    const viewToggle = screen.getByRole('button', { name: /switch to map view/i });
+    const viewToggle = screen.getByRole('button', { name: /map view/i });
     expect(viewToggle).toBeInTheDocument();
   });
 
@@ -119,7 +119,7 @@ describe('CitiesSection', () => {
       />
     );
 
-    const viewToggle = screen.getByRole('button', { name: /switch to map view/i });
+    const viewToggle = screen.getByRole('button', { name: /map view/i });
     fireEvent.click(viewToggle);
 
     expect(mockOnViewModeChange).toHaveBeenCalledWith('map');
@@ -141,7 +141,7 @@ describe('CitiesSection', () => {
       />
     );
 
-    const sortToggle = screen.getByRole('button', { name: /sort by/i });
+    const sortToggle = screen.getByRole('button', { name: /sort alphabetically/i });
     expect(sortToggle).toBeInTheDocument();
   });
 
@@ -161,7 +161,7 @@ describe('CitiesSection', () => {
       />
     );
 
-    const sortToggle = screen.queryByRole('button', { name: /sort by/i });
+    const sortToggle = screen.queryByRole('button', { name: /sort alphabetically/i });
     expect(sortToggle).not.toBeInTheDocument();
   });
 
@@ -181,7 +181,7 @@ describe('CitiesSection', () => {
       />
     );
 
-    const sortToggle = screen.getByRole('button', { name: /sort by/i });
+    const sortToggle = screen.getByRole('button', { name: /sort alphabetically/i });
     fireEvent.click(sortToggle);
 
     expect(mockOnSortModeChange).toHaveBeenCalledWith('alphabetical');
@@ -306,7 +306,9 @@ describe('CitiesSection', () => {
       />
     );
 
-    expect(screen.getByText(/map view/i)).toBeInTheDocument();
+    // In tile view, the tile button should be active
+    expect(screen.getByRole('button', { name: /tile view/i })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /map view/i })).toHaveAttribute('aria-pressed', 'false');
 
     rerender(
       <CitiesSection
@@ -319,7 +321,9 @@ describe('CitiesSection', () => {
       />
     );
 
-    expect(screen.getByText(/tile view/i)).toBeInTheDocument();
+    // In map view, the map button should be active
+    expect(screen.getByRole('button', { name: /tile view/i })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: /map view/i })).toHaveAttribute('aria-pressed', 'true');
   });
 
   /**
@@ -338,7 +342,9 @@ describe('CitiesSection', () => {
       />
     );
 
-    expect(screen.getByText(/sort: recent/i)).toBeInTheDocument();
+    // In date sort mode, the recent button should be active
+    expect(screen.getByRole('button', { name: /sort by most recent/i })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /sort alphabetically/i })).toHaveAttribute('aria-pressed', 'false');
 
     rerender(
       <CitiesSection
@@ -351,7 +357,9 @@ describe('CitiesSection', () => {
       />
     );
 
-    expect(screen.getByText(/sort: a-z/i)).toBeInTheDocument();
+    // In alphabetical sort mode, the alphabetical button should be active
+    expect(screen.getByRole('button', { name: /sort by most recent/i })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: /sort alphabetically/i })).toHaveAttribute('aria-pressed', 'true');
   });
 
   describe('Property-based tests', () => {
@@ -400,11 +408,11 @@ describe('CitiesSection', () => {
                 beforeYouGo: fc.string({ maxLength: 50 }),
                 overview: fc.string({ maxLength: 50 }),
                 places: fc.record({
-                  bars: fc.string({ maxLength: 30 }),
-                  restaurants: fc.string({ maxLength: 30 }),
-                  pointsOfInterest: fc.string({ maxLength: 30 }),
-                  gyms: fc.string({ maxLength: 30 }),
-                  accommodations: fc.string({ maxLength: 30 })
+                  bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 })
                 }),
                 createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                   .map((ms: number) => new Date(ms).toISOString()),
@@ -514,11 +522,11 @@ describe('CitiesSection', () => {
                 beforeYouGo: fc.string({ maxLength: 50 }),
                 overview: fc.string({ maxLength: 50 }),
                 places: fc.record({
-                  bars: fc.string({ maxLength: 30 }),
-                  restaurants: fc.string({ maxLength: 30 }),
-                  pointsOfInterest: fc.string({ maxLength: 30 }),
-                  gyms: fc.string({ maxLength: 30 }),
-                  accommodations: fc.string({ maxLength: 30 })
+                  bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 })
                 }),
                 createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                   .map((ms: number) => new Date(ms).toISOString()),

@@ -59,7 +59,7 @@ describe('PersonalSection', () => {
   it('should display a clickable LinkedIn link', () => {
     render(<PersonalSection personalInfo={mockPersonalInfo} />);
     
-    const linkedInLink = screen.getByRole('link', { name: /linkedin profile/i });
+    const linkedInLink = screen.getByRole('link', { name: /linkedin/i });
     expect(linkedInLink).toBeInTheDocument();
     expect(linkedInLink).toHaveAttribute('href', 'https://www.linkedin.com/in/michaeljan');
     expect(linkedInLink).toHaveAttribute('target', '_blank');
@@ -76,7 +76,7 @@ describe('PersonalSection', () => {
     expect(screen.getByText('Michael Jan')).toBeInTheDocument();
     expect(screen.getByText('Software Engineer & Travel Enthusiast')).toBeInTheDocument();
     expect(screen.getByText('Passionate about building great software and exploring the world.')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /linkedin profile/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /linkedin/i })).toBeInTheDocument();
   });
 
   /**
@@ -98,7 +98,7 @@ describe('PersonalSection', () => {
     expect(screen.getByText('Designer & Creator')).toBeInTheDocument();
     expect(screen.getByText('Creating beautiful experiences.')).toBeInTheDocument();
     
-    const linkedInLink = screen.getByRole('link', { name: /linkedin profile/i });
+    const linkedInLink = screen.getByRole('link', { name: /linkedin/i });
     expect(linkedInLink).toHaveAttribute('href', 'https://www.linkedin.com/in/janedoe');
   });
 

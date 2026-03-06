@@ -179,6 +179,11 @@ describe('AdminPanel Component', () => {
     fireEvent.click(editButtons[0]);
 
     expect(screen.getByText('Edit City')).toBeInTheDocument();
+    
+    // In edit mode, sections are collapsed - expand Basic Information to see city name
+    const basicInfoToggle = screen.getByRole('button', { name: /basic information/i });
+    fireEvent.click(basicInfoToggle);
+    
     expect(screen.getByDisplayValue('Tokyo')).toBeInTheDocument();
   });
 
@@ -324,6 +329,13 @@ describe('AdminPanel Property Tests', () => {
     await waitFor(() => {
       expect(screen.getByText('Edit City')).toBeInTheDocument();
     });
+
+    // In edit mode, sections are collapsed - expand them to check values
+    const basicInfoToggle = screen.getByRole('button', { name: /basic information/i });
+    fireEvent.click(basicInfoToggle);
+    
+    const contentToggle = screen.getByRole('button', { name: /content/i });
+    fireEvent.click(contentToggle);
 
     // Property: Form should be populated with current city data (Requirement 8.4)
     expect(screen.getByDisplayValue(city.name)).toBeInTheDocument();

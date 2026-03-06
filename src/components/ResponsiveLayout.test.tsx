@@ -94,11 +94,9 @@ describe('Responsive Layout Property Tests', () => {
 
       await fc.assert(
         fc.asyncProperty(
-          // Generate view mode
-          fc.constantFrom('tile' as const, 'map' as const),
           // Generate mobile viewport width (320px to 768px)
           fc.integer({ min: 320, max: 768 }),
-          async (viewMode: 'tile' | 'map', viewportWidth: number) => {
+          async (viewportWidth: number) => {
             // Set viewport width to mobile size
             Object.defineProperty(window, 'innerWidth', {
               writable: true,
@@ -110,7 +108,7 @@ describe('Responsive Layout Property Tests', () => {
 
             const mockOnClose = jest.fn();
             const { container } = render(
-              <CityOverlay city={mockCity} viewMode={viewMode} onClose={mockOnClose} />
+              <CityOverlay city={mockCity} onClose={mockOnClose} />
             );
 
             // Wait for city details to load
@@ -121,13 +119,8 @@ describe('Responsive Layout Property Tests', () => {
             // Property 1: Overlay should render
             expect(overlay).toBeInTheDocument();
 
-            // Property 2: Overlay should have appropriate base class
-            // The CSS media query handles the actual full-screen behavior on mobile
-            if (viewMode === 'tile') {
-              expect(overlay).toHaveClass('overlay-fullscreen');
-            } else {
-              expect(overlay).toHaveClass('overlay-sidepanel');
-            }
+            // Property 2: Overlay should have side panel class
+            expect(overlay).toHaveClass('overlay-sidepanel');
 
             // Property 3: Overlay content should be present
             const overlayContent = container.querySelector('.overlay-content');

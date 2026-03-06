@@ -25,6 +25,7 @@ import {
   ApiErrorResponse
 } from '../types';
 import { useAuth } from './AuthContext';
+import API_ENDPOINTS from '../config/api';
 
 /**
  * Retry configuration for transient failures
@@ -161,7 +162,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const fetchPersonalInfo = useCallback(async (): Promise<void> => {
     try {
       await retryWithBackoff(async () => {
-        const response = await fetch('/api/personal');
+        const response = await fetch(API_ENDPOINTS.personal);
         
         if (!response.ok) {
           throw new Error('Failed to fetch personal information');
@@ -183,7 +184,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const fetchCities = useCallback(async (): Promise<void> => {
     try {
       await retryWithBackoff(async () => {
-        const response = await fetch('/api/cities');
+        const response = await fetch(API_ENDPOINTS.cities);
         
         if (!response.ok) {
           throw new Error('Failed to fetch cities');
@@ -232,7 +233,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
     try {
       return await retryWithBackoff(async () => {
-        const response = await fetch(`/api/cities/${cityId}`);
+        const response = await fetch(API_ENDPOINTS.cityDetails(cityId));
         if (!response.ok) {
           throw new Error(response.status === 404 ? 'City not found' : 'Failed to fetch city details');
         }
@@ -263,7 +264,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch('/api/admin/personal', {
+      const response = await fetch(API_ENDPOINTS.adminPersonal, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -315,7 +316,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch('/api/admin/cities', {
+      const response = await fetch(API_ENDPOINTS.adminCities, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -366,7 +367,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch(`/api/admin/cities/${cityId}`, {
+      const response = await fetch(API_ENDPOINTS.adminCity(cityId), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(cityData)
@@ -404,7 +405,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     setError(null);
 
     try {
-      const response = await fetch(`/api/admin/cities/${cityId}`, {
+      const response = await fetch(API_ENDPOINTS.adminCity(cityId), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

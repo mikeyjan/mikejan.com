@@ -11,6 +11,7 @@
 
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { AdminAuthRequest, AdminAuthResponse } from '../types';
+import API_ENDPOINTS from '../config/api';
 
 /**
  * Authentication context value interface
@@ -66,7 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       // Call authentication endpoint
       // Note: API endpoint will be configured via Amplify
-      const response = await fetch('/api/admin/auth', {
+      const response = await fetch(API_ENDPOINTS.auth, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

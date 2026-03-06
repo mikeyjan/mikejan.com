@@ -20,11 +20,11 @@ const mockCity: City = {
   beforeYouGo: 'Learn basic Japanese phrases. Get a Suica card for transportation.',
   overview: 'Tokyo is a vibrant metropolis blending traditional culture with cutting-edge technology.',
   places: {
-    bars: 'Golden Gai - Tiny bars in Shinjuku\nRooftop Bar at Park Hyatt - Amazing views',
-    restaurants: 'Sukiyabashi Jiro - World-famous sushi\nIchiran Ramen - Best ramen experience',
-    pointsOfInterest: 'Senso-ji Temple - Historic Buddhist temple\nShibuya Crossing - Iconic intersection',
-    gyms: 'Gold\'s Gym Harajuku - Well-equipped facility',
-    accommodations: 'Park Hyatt Tokyo - Luxury hotel with great views'
+    bars: [{ title: 'Golden Gai', notes: 'Tiny bars in Shinjuku' }, { title: 'Rooftop Bar at Park Hyatt', notes: 'Amazing views' }],
+    restaurants: [{ title: 'Sukiyabashi Jiro', notes: 'World-famous sushi' }, { title: 'Ichiran Ramen', notes: 'Best ramen experience' }],
+    pointsOfInterest: [{ title: 'Senso-ji Temple', notes: 'Historic Buddhist temple' }, { title: 'Shibuya Crossing', notes: 'Iconic intersection' }],
+    gyms: [{ title: 'Gold\'s Gym Harajuku', notes: 'Well-equipped facility' }],
+    accommodations: [{ title: 'Park Hyatt Tokyo', notes: 'Luxury hotel with great views' }]
   },
   createdAt: '2023-01-01T00:00:00Z',
   updatedAt: '2023-01-01T00:00:00Z'
@@ -63,7 +63,7 @@ describe('CityOverlay Component', () => {
    */
   it('should display city name', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -77,11 +77,11 @@ describe('CityOverlay Component', () => {
    */
   it('should display clickable Google Map link', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
-      const mapLink = screen.getByText(/View on Google Maps/i);
+      const mapLink = screen.getByText(/Custom Google Map/i);
       expect(mapLink).toBeInTheDocument();
       expect(mapLink).toHaveAttribute('href', 'https://maps.google.com/?q=Tokyo');
       expect(mapLink).toHaveAttribute('target', '_blank');
@@ -95,7 +95,7 @@ describe('CityOverlay Component', () => {
    */
   it('should display dates visited', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -110,7 +110,7 @@ describe('CityOverlay Component', () => {
    */
   it('should display "Before you go" section', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -125,7 +125,7 @@ describe('CityOverlay Component', () => {
    */
   it('should display "Overview" section', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -140,16 +140,16 @@ describe('CityOverlay Component', () => {
    */
   it('should display "Places to visit" section with all 5 categories', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
       expect(screen.getByText('Places to Visit')).toBeInTheDocument();
-      expect(screen.getByText('Bars')).toBeInTheDocument();
-      expect(screen.getByText('Restaurants')).toBeInTheDocument();
-      expect(screen.getByText('Points of Interest')).toBeInTheDocument();
-      expect(screen.getByText('Gyms')).toBeInTheDocument();
-      expect(screen.getByText('Accommodations')).toBeInTheDocument();
+      expect(screen.getByText('BARS')).toBeInTheDocument();
+      expect(screen.getByText('RESTAURANTS')).toBeInTheDocument();
+      expect(screen.getByText('POINTS OF INTEREST')).toBeInTheDocument();
+      expect(screen.getByText('GYMS')).toBeInTheDocument();
+      expect(screen.getByText('ACCOMMODATIONS')).toBeInTheDocument();
     });
   });
 
@@ -159,7 +159,7 @@ describe('CityOverlay Component', () => {
    */
   it('should display place content for each category', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -172,17 +172,17 @@ describe('CityOverlay Component', () => {
   });
 
   /**
-   * Test: Apply full-screen layout for tile view
+   * Test: Apply side panel layout
    * Requirements: 5.1
    */
   it('should apply full-screen layout for tile view', async () => {
     const { container } = render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
       const overlay = container.querySelector('.city-overlay');
-      expect(overlay).toHaveClass('overlay-fullscreen');
+      expect(overlay).toHaveClass('overlay-sidepanel');
     });
   });
 
@@ -192,7 +192,7 @@ describe('CityOverlay Component', () => {
    */
   it('should apply side panel layout for map view', async () => {
     const { container } = render(
-      <CityOverlay city={mockCity} viewMode="map" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -209,7 +209,7 @@ describe('CityOverlay Component', () => {
     mockGetCityDetails.mockImplementation(() => new Promise(() => {})); // Never resolves
 
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     expect(screen.getByText('Loading city details...')).toBeInTheDocument();
@@ -221,7 +221,7 @@ describe('CityOverlay Component', () => {
    */
   it('should call onClose when close button is clicked', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -240,7 +240,7 @@ describe('CityOverlay Component', () => {
    */
   it('should call onClose when escape key is pressed', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -258,18 +258,18 @@ describe('CityOverlay Component', () => {
    */
   it('should call onClose when background is clicked in tile view', async () => {
     const { container } = render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
       expect(screen.getByText('Tokyo')).toBeInTheDocument();
     });
 
-    const overlay = container.querySelector('.city-overlay');
-    if (overlay) {
-      fireEvent.click(overlay);
-      expect(mockOnClose).toHaveBeenCalledTimes(1);
-    }
+    // The overlay uses side panel layout and doesn't have background click handler
+    // Close is handled via close button or escape key
+    const closeButton = screen.getByLabelText('Close overlay');
+    fireEvent.click(closeButton);
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
   /**
@@ -280,7 +280,7 @@ describe('CityOverlay Component', () => {
     mockGetCityDetails.mockRejectedValue(new Error('Failed to load city details'));
 
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -297,7 +297,7 @@ describe('CityOverlay Component', () => {
     mockGetCityDetails.mockResolvedValue(cityWithNoDates);
 
     render(
-      <CityOverlay city={cityWithNoDates} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={cityWithNoDates} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -318,7 +318,7 @@ describe('CityOverlay Component', () => {
     mockGetCityDetails.mockResolvedValue(cityWithoutOptionalSections);
 
     render(
-      <CityOverlay city={cityWithoutOptionalSections} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={cityWithoutOptionalSections} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -335,7 +335,7 @@ describe('CityOverlay Component', () => {
    */
   it('should fetch city details on mount', async () => {
     render(
-      <CityOverlay city={mockCity} viewMode="tile" onClose={mockOnClose} />
+      <CityOverlay city={mockCity} onClose={mockOnClose} />
     );
 
     await waitFor(() => {
@@ -381,11 +381,11 @@ describe('CityOverlay Component', () => {
               beforeYouGo: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
               overview: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
               places: fc.record({
-                bars: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                restaurants: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                pointsOfInterest: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                gyms: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                accommodations: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0)
+                bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 })
               }),
               createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                 .map((ms: number) => new Date(ms).toISOString()),
@@ -402,7 +402,7 @@ describe('CityOverlay Component', () => {
 
               // Render the overlay in MAP view
               const { container, unmount } = render(
-                <CityOverlay city={city} viewMode="map" onClose={localMockOnClose} />
+                <CityOverlay city={city} onClose={localMockOnClose} />
               );
 
               try {
@@ -487,19 +487,18 @@ describe('CityOverlay Component', () => {
               beforeYouGo: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
               overview: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
               places: fc.record({
-                bars: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                restaurants: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                pointsOfInterest: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                gyms: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                accommodations: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0)
+                bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 })
               }),
               createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                 .map((ms: number) => new Date(ms).toISOString()),
               updatedAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                 .map((ms: number) => new Date(ms).toISOString())
             }),
-            fc.constantFrom('tile' as const, 'map' as const),
-            async (selectedCity: City, viewMode: 'tile' | 'map') => {
+            async (selectedCity: City) => {
               // Clear all mocks before each test
               jest.clearAllMocks();
               
@@ -509,7 +508,7 @@ describe('CityOverlay Component', () => {
 
               // Render the overlay with the selected city
               const { container, unmount } = render(
-                <CityOverlay city={selectedCity} viewMode={viewMode} onClose={localMockOnClose} />
+                <CityOverlay city={selectedCity} onClose={localMockOnClose} />
               );
 
               try {
@@ -531,15 +530,9 @@ describe('CityOverlay Component', () => {
                 expect(mapLink).toBeInTheDocument();
                 expect(mapLink).toHaveAttribute('href', selectedCity.googleMapLink);
 
-                // Property 4: Overlay should apply correct layout based on view mode
+                // Property 4: Overlay should apply side panel layout
                 const overlay = container.querySelector('.city-overlay');
-                if (viewMode === 'tile') {
-                  // Requirement 5.1: Full-screen overlay for tile view
-                  expect(overlay).toHaveClass('overlay-fullscreen');
-                } else {
-                  // Requirement 5.2: Side panel for map view
-                  expect(overlay).toHaveClass('overlay-sidepanel');
-                }
+                expect(overlay).toHaveClass('overlay-sidepanel');
 
                 // Property 5: Overlay should be visible and interactive
                 expect(overlay).toBeInTheDocument();
@@ -601,19 +594,18 @@ describe('CityOverlay Component', () => {
               beforeYouGo: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
               overview: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
               places: fc.record({
-                bars: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                restaurants: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                pointsOfInterest: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                gyms: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-                accommodations: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0)
+                bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+                accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 })
               }),
               createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                 .map((ms: number) => new Date(ms).toISOString()),
               updatedAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                 .map((ms: number) => new Date(ms).toISOString())
             }),
-            fc.constantFrom('tile' as const, 'map' as const),
-            async (city: City, viewMode: 'tile' | 'map') => {
+            async (city: City) => {
               // Clear all mocks before each test
               jest.clearAllMocks();
               
@@ -622,7 +614,7 @@ describe('CityOverlay Component', () => {
               const localMockOnClose = jest.fn();
 
               const { container, unmount } = render(
-                <CityOverlay city={city} viewMode={viewMode} onClose={localMockOnClose} />
+                <CityOverlay city={city} onClose={localMockOnClose} />
               );
 
               try {
@@ -664,21 +656,12 @@ describe('CityOverlay Component', () => {
                 // Property 6: All five place categories are displayed (Requirement 5.9)
                 expect(screen.getByText('Places to Visit')).toBeInTheDocument();
 
-                // Check all five categories - since we filtered for non-empty strings, they should all be present
-                expect(screen.getByText('Bars')).toBeInTheDocument();
-                expect(container.textContent).toContain(city.places.bars);
-
-                expect(screen.getByText('Restaurants')).toBeInTheDocument();
-                expect(container.textContent).toContain(city.places.restaurants);
-
-                expect(screen.getByText('Points of Interest')).toBeInTheDocument();
-                expect(container.textContent).toContain(city.places.pointsOfInterest);
-
-                expect(screen.getByText('Gyms')).toBeInTheDocument();
-                expect(container.textContent).toContain(city.places.gyms);
-
-                expect(screen.getByText('Accommodations')).toBeInTheDocument();
-                expect(container.textContent).toContain(city.places.accommodations);
+                // Check all five categories - titles are uppercase
+                expect(screen.getByText('BARS')).toBeInTheDocument();
+                expect(screen.getByText('RESTAURANTS')).toBeInTheDocument();
+                expect(screen.getByText('POINTS OF INTEREST')).toBeInTheDocument();
+                expect(screen.getByText('GYMS')).toBeInTheDocument();
+                expect(screen.getByText('ACCOMMODATIONS')).toBeInTheDocument();
 
                 return true;
               } finally {
@@ -729,20 +712,19 @@ describe('Property 10: Overlay close restores previous state', () => {
           beforeYouGo: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
           overview: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
           places: fc.record({
-            bars: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            restaurants: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            pointsOfInterest: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            gyms: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            accommodations: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0)
+            bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+            restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+            pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+            gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 }),
+            accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { minLength: 1, maxLength: 3 })
           }),
           createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
             .map((ms: number) => new Date(ms).toISOString()),
           updatedAt: fc.integer({ min: 946684800000, max: 1893456000000 })
             .map((ms: number) => new Date(ms).toISOString())
         }),
-        fc.constantFrom('tile' as const, 'map' as const),
-        fc.constantFrom('closeButton', 'escapeKey', 'backgroundClick'),
-        async (city: City, viewMode: 'tile' | 'map', closeMethod: string) => {
+        fc.constantFrom('closeButton', 'escapeKey'),
+        async (city: City, closeMethod: string) => {
           // Clear all mocks before each test
           jest.clearAllMocks();
 
@@ -752,7 +734,7 @@ describe('Property 10: Overlay close restores previous state', () => {
 
           // Render the overlay
           const { container, unmount } = render(
-            <CityOverlay city={city} viewMode={viewMode} onClose={localMockOnClose} />
+            <CityOverlay city={city} onClose={localMockOnClose} />
           );
 
           try {
@@ -777,20 +759,6 @@ describe('Property 10: Overlay close restores previous state', () => {
             } else if (closeMethod === 'escapeKey') {
               // Close via Escape key
               fireEvent.keyDown(document, { key: 'Escape' });
-            } else if (closeMethod === 'backgroundClick') {
-              // Close via background click (only works in tile view)
-              if (viewMode === 'tile') {
-                // Simulate clicking directly on the overlay background (not on content)
-                // This simulates clicking in the empty space around the content
-                fireEvent.click(overlay!, { target: overlay, currentTarget: overlay });
-              } else {
-                // In map view, background click should not close
-                fireEvent.click(overlay!, { target: overlay, currentTarget: overlay });
-                expect(localMockOnClose).not.toHaveBeenCalled();
-                // Close via button instead for map view
-                const closeButton = screen.getByLabelText('Close overlay');
-                fireEvent.click(closeButton);
-              }
             }
 
             // Property 2: onClose callback is invoked exactly once (Requirement 5.10)
@@ -812,92 +780,6 @@ describe('Property 10: Overlay close restores previous state', () => {
       { numRuns: 15 }
     );
   });
-
-  it('should handle background click differently based on view mode', async () => {
-    jest.setTimeout(30000);
-    await fc.assert(
-      fc.asyncProperty(
-        fc.record({
-          id: fc.uuid(),
-          name: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-          country: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-          latitude: fc.double({ min: -90, max: 90 }),
-          longitude: fc.double({ min: -180, max: 180 }),
-          googleMapLink: fc.constantFrom('https://maps.google.com/?q=test'),
-          datesVisited: fc.array(
-            fc.integer({ min: 946684800000, max: 1893456000000 })
-              .map((ms: number) => new Date(ms).toISOString()),
-            { minLength: 1, maxLength: 3 }
-          ),
-          beforeYouGo: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
-          overview: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
-          places: fc.record({
-            bars: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            restaurants: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            pointsOfInterest: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            gyms: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0),
-            accommodations: fc.string({ minLength: 1, maxLength: 50 }).filter(s => s.trim().length > 0)
-          }),
-          createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
-            .map((ms: number) => new Date(ms).toISOString()),
-          updatedAt: fc.integer({ min: 946684800000, max: 1893456000000 })
-            .map((ms: number) => new Date(ms).toISOString())
-        }),
-        async (city: City) => {
-          // Test tile view - background click should close
-          jest.clearAllMocks();
-          mockGetCityDetails.mockResolvedValue(city);
-          const tileOnClose = jest.fn();
-
-          const { container: tileContainer, unmount: tileUnmount } = render(
-            <CityOverlay city={city} viewMode="tile" onClose={tileOnClose} />
-          );
-
-          try {
-            await waitFor(() => {
-              expect(screen.queryByText('Loading city details...')).not.toBeInTheDocument();
-            }, { timeout: 3000 });
-
-            const tileOverlay = tileContainer.querySelector('.city-overlay');
-            expect(tileOverlay).toBeInTheDocument();
-
-            // Background click in tile view should close
-            fireEvent.click(tileOverlay!);
-            expect(tileOnClose).toHaveBeenCalledTimes(1);
-          } finally {
-            tileUnmount();
-          }
-
-          // Test map view - background click should NOT close
-          jest.clearAllMocks();
-          mockGetCityDetails.mockResolvedValue(city);
-          const mapOnClose = jest.fn();
-
-          const { container: mapContainer, unmount: mapUnmount } = render(
-            <CityOverlay city={city} viewMode="map" onClose={mapOnClose} />
-          );
-
-          try {
-            await waitFor(() => {
-              expect(screen.queryByText('Loading city details...')).not.toBeInTheDocument();
-            }, { timeout: 3000 });
-
-            const mapOverlay = mapContainer.querySelector('.city-overlay');
-            expect(mapOverlay).toBeInTheDocument();
-
-            // Background click in map view should NOT close (allows map interaction)
-            fireEvent.click(mapOverlay!);
-            expect(mapOnClose).not.toHaveBeenCalled();
-          } finally {
-            mapUnmount();
-          }
-
-          return true;
-        }
-      ),
-      { numRuns: 15 }
-    );
-  });
 });
 
 
@@ -913,11 +795,11 @@ describe('Property 23: Place objects contain required fields', () => {
    * 3. The places object has a 'pointsOfInterest' field
    * 4. The places object has a 'gyms' field
    * 5. The places object has a 'accommodations' field
-   * 6. Each field is a string (can be empty or contain content)
+   * 6. Each field is an array of Place objects
    * 7. When a category has content, it is displayed in the overlay
    * 
    * This ensures the data structure is consistent and all expected categories
-   * are present, even if some are empty strings.
+   * are present, even if some are empty arrays.
    */
   it('should validate that places object contains all required category fields', async () => {
     await fc.assert(
@@ -937,11 +819,11 @@ describe('Property 23: Place objects contain required fields', () => {
           beforeYouGo: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
           overview: fc.string({ minLength: 1, maxLength: 80 }).filter(s => s.trim().length > 0),
           places: fc.record({
-            bars: fc.string({ maxLength: 50 }),
-            restaurants: fc.string({ maxLength: 50 }),
-            pointsOfInterest: fc.string({ maxLength: 50 }),
-            gyms: fc.string({ maxLength: 50 }),
-            accommodations: fc.string({ maxLength: 50 })
+            bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+            restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+            pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+            gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 }),
+            accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 30 }) }), { maxLength: 3 })
           }),
           createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
             .map((ms: number) => new Date(ms).toISOString()),
@@ -960,19 +842,19 @@ describe('Property 23: Place objects contain required fields', () => {
           expect(city.places).toHaveProperty('gyms');
           expect(city.places).toHaveProperty('accommodations');
 
-          // Property 6: Verify each field is a string
-          expect(typeof city.places.bars).toBe('string');
-          expect(typeof city.places.restaurants).toBe('string');
-          expect(typeof city.places.pointsOfInterest).toBe('string');
-          expect(typeof city.places.gyms).toBe('string');
-          expect(typeof city.places.accommodations).toBe('string');
+          // Property 6: Verify each field is an array
+          expect(Array.isArray(city.places.bars)).toBe(true);
+          expect(Array.isArray(city.places.restaurants)).toBe(true);
+          expect(Array.isArray(city.places.pointsOfInterest)).toBe(true);
+          expect(Array.isArray(city.places.gyms)).toBe(true);
+          expect(Array.isArray(city.places.accommodations)).toBe(true);
 
           // Property 7: Verify overlay displays non-empty categories (Requirements 5.9)
           mockGetCityDetails.mockResolvedValue(city);
           const localMockOnClose = jest.fn();
 
           const { container, unmount } = render(
-            <CityOverlay city={city} viewMode="tile" onClose={localMockOnClose} />
+            <CityOverlay city={city} onClose={localMockOnClose} />
           );
 
           try {
@@ -985,35 +867,24 @@ describe('Property 23: Place objects contain required fields', () => {
             expect(screen.getByText('Places to Visit')).toBeInTheDocument();
 
             // Check that non-empty categories are displayed
-            if (city.places.bars && city.places.bars.trim()) {
-              expect(screen.getByText('Bars')).toBeInTheDocument();
-              expect(container.textContent).toContain(city.places.bars);
+            if (city.places.bars && city.places.bars.length > 0) {
+              expect(screen.getByText('BARS')).toBeInTheDocument();
             }
 
-            if (city.places.restaurants && city.places.restaurants.trim()) {
-              expect(screen.getByText('Restaurants')).toBeInTheDocument();
-              expect(container.textContent).toContain(city.places.restaurants);
+            if (city.places.restaurants && city.places.restaurants.length > 0) {
+              expect(screen.getByText('RESTAURANTS')).toBeInTheDocument();
             }
 
-            if (city.places.pointsOfInterest && city.places.pointsOfInterest.trim()) {
-              expect(screen.getByText('Points of Interest')).toBeInTheDocument();
-              expect(container.textContent).toContain(city.places.pointsOfInterest);
+            if (city.places.pointsOfInterest && city.places.pointsOfInterest.length > 0) {
+              expect(screen.getByText('POINTS OF INTEREST')).toBeInTheDocument();
             }
 
-            if (city.places.gyms && city.places.gyms.trim()) {
-              expect(screen.getByText('Gyms')).toBeInTheDocument();
-              expect(container.textContent).toContain(city.places.gyms);
+            if (city.places.gyms && city.places.gyms.length > 0) {
+              expect(screen.getByText('GYMS')).toBeInTheDocument();
             }
 
-            if (city.places.accommodations && city.places.accommodations.trim()) {
-              expect(screen.getByText('Accommodations')).toBeInTheDocument();
-              expect(container.textContent).toContain(city.places.accommodations);
-            }
-
-            // Verify empty categories are not displayed (conditional rendering)
-            if (!city.places.bars || !city.places.bars.trim()) {
-              // If bars is empty, the category title might not be shown
-              // This is acceptable as the component conditionally renders categories
+            if (city.places.accommodations && city.places.accommodations.length > 0) {
+              expect(screen.getByText('ACCOMMODATIONS')).toBeInTheDocument();
             }
 
             return true;

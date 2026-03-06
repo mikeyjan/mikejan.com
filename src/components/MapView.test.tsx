@@ -41,11 +41,11 @@ describe('MapView', () => {
       beforeYouGo: 'Bring cash',
       overview: 'Amazing city',
       places: {
-        bars: 'Bar 1',
-        restaurants: 'Restaurant 1',
-        pointsOfInterest: 'POI 1',
-        gyms: 'Gym 1',
-        accommodations: 'Hotel 1'
+        bars: [{ title: 'Bar 1' }],
+        restaurants: [{ title: 'Restaurant 1' }],
+        pointsOfInterest: [{ title: 'POI 1' }],
+        gyms: [{ title: 'Gym 1' }],
+        accommodations: [{ title: 'Hotel 1' }]
       },
       createdAt: '2023-01-01T00:00:00Z',
       updatedAt: '2023-01-01T00:00:00Z'
@@ -61,11 +61,11 @@ describe('MapView', () => {
       beforeYouGo: 'Learn basic French',
       overview: 'City of lights',
       places: {
-        bars: 'Bar 2',
-        restaurants: 'Restaurant 2',
-        pointsOfInterest: 'POI 2',
-        gyms: 'Gym 2',
-        accommodations: 'Hotel 2'
+        bars: [{ title: 'Bar 2' }],
+        restaurants: [{ title: 'Restaurant 2' }],
+        pointsOfInterest: [{ title: 'POI 2' }],
+        gyms: [{ title: 'Gym 2' }],
+        accommodations: [{ title: 'Hotel 2' }]
       },
       createdAt: '2023-02-01T00:00:00Z',
       updatedAt: '2023-02-01T00:00:00Z'
@@ -191,11 +191,11 @@ describe('MapView', () => {
                 beforeYouGo: fc.string({ maxLength: 50 }),
                 overview: fc.string({ maxLength: 50 }),
                 places: fc.record({
-                  bars: fc.string({ maxLength: 30 }),
-                  restaurants: fc.string({ maxLength: 30 }),
-                  pointsOfInterest: fc.string({ maxLength: 30 }),
-                  gyms: fc.string({ maxLength: 30 }),
-                  accommodations: fc.string({ maxLength: 30 })
+                  bars: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  restaurants: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  pointsOfInterest: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  gyms: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 }),
+                  accommodations: fc.array(fc.record({ title: fc.string({ minLength: 1, maxLength: 20 }) }), { maxLength: 2 })
                 }),
                 createdAt: fc.integer({ min: 946684800000, max: 1893456000000 })
                   .map((ms: number) => new Date(ms).toISOString()),

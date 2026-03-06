@@ -32,11 +32,11 @@ describe('CityList', () => {
       beforeYouGo: 'Bring comfortable shoes',
       overview: 'City of lights',
       places: {
-        bars: 'Bar 1',
-        restaurants: 'Restaurant 1',
-        pointsOfInterest: 'Eiffel Tower',
-        gyms: 'Gym 1',
-        accommodations: 'Hotel 1'
+        bars: [{ title: 'Bar 1' }],
+        restaurants: [{ title: 'Restaurant 1' }],
+        pointsOfInterest: [{ title: 'Eiffel Tower' }],
+        gyms: [{ title: 'Gym 1' }],
+        accommodations: [{ title: 'Hotel 1' }]
       },
       createdAt: '2023-01-01T00:00:00Z',
       updatedAt: '2023-01-01T00:00:00Z'
@@ -52,11 +52,11 @@ describe('CityList', () => {
       beforeYouGo: 'Learn basic Japanese',
       overview: 'Modern metropolis',
       places: {
-        bars: 'Bar 2',
-        restaurants: 'Restaurant 2',
-        pointsOfInterest: 'Shibuya Crossing',
-        gyms: 'Gym 2',
-        accommodations: 'Hotel 2'
+        bars: [{ title: 'Bar 2' }],
+        restaurants: [{ title: 'Restaurant 2' }],
+        pointsOfInterest: [{ title: 'Shibuya Crossing' }],
+        gyms: [{ title: 'Gym 2' }],
+        accommodations: [{ title: 'Hotel 2' }]
       },
       createdAt: '2023-02-01T00:00:00Z',
       updatedAt: '2023-02-01T00:00:00Z'

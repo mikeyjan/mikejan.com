@@ -27,11 +27,11 @@ interface City {
 }
 
 interface PlacesCategories {
-  bars: string;
-  restaurants: string;
-  pointsOfInterest: string;
-  gyms: string;
-  accommodations: string;
+  bars: { title: string; link?: string; notes?: string }[];
+  restaurants: { title: string; link?: string; notes?: string }[];
+  pointsOfInterest: { title: string; link?: string; notes?: string }[];
+  gyms: { title: string; link?: string; notes?: string }[];
+  accommodations: { title: string; link?: string; notes?: string }[];
 }
 
 // Mock DynamoDB data store
@@ -45,12 +45,16 @@ function mockGetCityDetails(cityId: string): City | null {
 // Arbitraries for generating test data
 const cityIdArbitrary = fc.uuid();
 
+const placeArbitrary = fc.record({
+  title: fc.string({ minLength: 1, maxLength: 50 })
+});
+
 const placesArbitrary: fc.Arbitrary<PlacesCategories> = fc.record({
-  bars: fc.string(),
-  restaurants: fc.string(),
-  pointsOfInterest: fc.string(),
-  gyms: fc.string(),
-  accommodations: fc.string(),
+  bars: fc.array(placeArbitrary, { maxLength: 3 }),
+  restaurants: fc.array(placeArbitrary, { maxLength: 3 }),
+  pointsOfInterest: fc.array(placeArbitrary, { maxLength: 3 }),
+  gyms: fc.array(placeArbitrary, { maxLength: 3 }),
+  accommodations: fc.array(placeArbitrary, { maxLength: 3 }),
 });
 
 const cityArbitrary: fc.Arbitrary<City> = fc.record({
