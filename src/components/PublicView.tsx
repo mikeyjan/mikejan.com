@@ -68,7 +68,7 @@ export const PublicView: React.FC = () => {
     return (
       <div className="public-view">
         <div className="public-view-loading">
-          <p>Loading...</p>
+          <div className="loading-spinner" aria-label="Loading"></div>
         </div>
       </div>
     );
