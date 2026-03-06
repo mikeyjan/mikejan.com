@@ -15,6 +15,7 @@ import { useData } from '../contexts/DataContext';
 import PersonalInfoForm from './PersonalInfoForm';
 import CityList from './CityList';
 import CityForm from './CityForm';
+import PlacesUpload from './PlacesUpload';
 import { DeleteConfirmation } from './DeleteConfirmation';
 import { City } from '../types';
 import './AdminPanel.css';
@@ -124,6 +125,15 @@ export const AdminPanel: React.FC = () => {
    */
   const renderDashboard = () => (
     <div className="admin-dashboard">
+      <section className="admin-section">
+        <div className="admin-section-header">
+          <h2 className="admin-section-title">Places Upload</h2>
+        </div>
+        <div className="admin-section-content">
+          <PlacesUpload />
+        </div>
+      </section>
+
       <section className="admin-section">
         <div className="admin-section-header">
           <h2 className="admin-section-title">Cities</h2>
