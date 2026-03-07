@@ -1,5 +1,5 @@
 /**
- * PlacesUpload component for bulk adding places to existing cities
+ * PlacesUpload component for adding a single place to an existing city
  */
 
 import React, { useState } from 'react';
@@ -35,136 +35,95 @@ export const PlacesUpload: React.FC = () => {
     setSuccess(null);
 
     if (!uploadText.trim()) {
-      setError('Please enter at least one line to upload.');
+      setError('Please enter place details.');
       return;
     }
 
     const lines = uploadText.trim().split('\n');
-    const errors: string[] = [];
-    const updates: Map<string, { city: typeof cities[0], places: Partial<Record<keyof PlacesCategories, Place[]>> }> = new Map();
-
-    // Parse and validate all lines first
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-
-      // Parse CSV-like format
-      const parts: string[] = [];
-      let current = '';
-      let inQuotes = false;
-
-      for (let j = 0; j < line.length; j++) {
-        const char = line[j];
-        if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === ',' && !inQuotes) {
-          parts.push(current.trim());
-          current = '';
-        } else {
-          current += char;
-        }
-      }
-      parts.push(current.trim());
-
-      // Validate minimum fields
-      if (parts.length < 3) {
-        errors.push(`Line ${i + 1}: Missing required fields. Format: city, category, place name, link (optional), notes (optional)`);
-        continue;
-      }
-
-      const [cityName, categoryInput, placeName, link, notes] = parts.map(p => p.replace(/['"]/g, '').trim());
-
-      // Find city
-      const city = cities.find(c => c.name.toLowerCase() === cityName.toLowerCase());
-      if (!city) {
-        errors.push(`Line ${i + 1}: City "${cityName}" not found. Available cities: ${cities.map(c => c.name).join(', ')}`);
-        continue;
-      }
-
-      // Validate category
-      const category = validCategories[categoryInput.toLowerCase()];
-      if (!category) {
-        errors.push(`Line ${i + 1}: Invalid category "${categoryInput}". Valid: bars, restaurants, poi, gyms, accommodations`);
-        continue;
-      }
-
-      // Validate place name
-      if (!placeName) {
-        errors.push(`Line ${i + 1}: Place name is required.`);
-        continue;
-      }
-
-      // Validate link if provided
-      if (link) {
-        try {
-          new URL(link);
-        } catch {
-          errors.push(`Line ${i + 1}: Invalid URL "${link}".`);
-          continue;
-        }
-      }
-
-      // Group by city
-      if (!updates.has(city.id)) {
-        updates.set(city.id, { city, places: {} });
-      }
-      const cityUpdate = updates.get(city.id)!;
-      if (!cityUpdate.places[category]) {
-        cityUpdate.places[category] = [];
-      }
-
-      const newPlace: Place = {
-        title: placeName,
-        ...(link && { link }),
-        ...(notes && { notes })
-      };
-      cityUpdate.places[category]!.push(newPlace);
-    }
-
-    if (errors.length > 0) {
-      setError(errors.join('\n'));
+    
+    // Validate we have at least 3 lines (city, category, name)
+    if (lines.length < 3) {
+      setError('Missing required fields. Need at least: city, category, and place name (each on a new line).');
       return;
     }
 
-    // Apply updates
+    const cityName = lines[0]?.trim();
+    const categoryInput = lines[1]?.trim();
+    const placeName = lines[2]?.trim();
+    const link = lines[3]?.trim() || '';
+    const notes = lines[4]?.trim() || '';
+
+    // Find city
+    const city = cities.find(c => c.name.toLowerCase() === cityName.toLowerCase());
+    if (!city) {
+      setError(`City "${cityName}" not found. Available cities: ${cities.map(c => c.name).join(', ')}`);
+      return;
+    }
+
+    // Validate category
+    const category = validCategories[categoryInput.toLowerCase()];
+    if (!category) {
+      setError(`Invalid category "${categoryInput}". Valid: bars, restaurants, poi, gyms, accommodations`);
+      return;
+    }
+
+    // Validate place name
+    if (!placeName) {
+      setError('Place name is required.');
+      return;
+    }
+
+    // Validate link if provided
+    if (link) {
+      try {
+        new URL(link);
+      } catch {
+        setError(`Invalid URL "${link}". Must start with http:// or https://`);
+        return;
+      }
+    }
+
+    // Create the new place
+    const newPlace: Place = {
+      title: placeName,
+      ...(link && { link }),
+      ...(notes && { notes })
+    };
+
+    // Apply update
     setUploading(true);
-    let totalPlaces = 0;
-    let citiesUpdated = 0;
 
     try {
-      for (const [cityId, update] of updates) {
-        const cityDetails = await getCityDetails(cityId);
-        
-        const mergedPlaces = {
-          bars: [...(cityDetails.places.bars || []), ...(update.places.bars || [])],
-          restaurants: [...(cityDetails.places.restaurants || []), ...(update.places.restaurants || [])],
-          pointsOfInterest: [...(cityDetails.places.pointsOfInterest || []), ...(update.places.pointsOfInterest || [])],
-          gyms: [...(cityDetails.places.gyms || []), ...(update.places.gyms || [])],
-          accommodations: [...(cityDetails.places.accommodations || []), ...(update.places.accommodations || [])]
-        };
+      const cityDetails = await getCityDetails(city.id);
+      
+      const mergedPlaces = {
+        bars: [...(cityDetails.places?.bars || [])],
+        restaurants: [...(cityDetails.places?.restaurants || [])],
+        pointsOfInterest: [...(cityDetails.places?.pointsOfInterest || [])],
+        gyms: [...(cityDetails.places?.gyms || [])],
+        accommodations: [...(cityDetails.places?.accommodations || [])]
+      };
+      
+      // Add the new place to the appropriate category
+      mergedPlaces[category].push(newPlace);
 
-        await updateCity(cityId, {
-          name: cityDetails.name,
-          country: cityDetails.country,
-          latitude: cityDetails.latitude,
-          longitude: cityDetails.longitude,
-          googleMapLink: cityDetails.googleMapLink,
-          datesVisited: cityDetails.datesVisited,
-          beforeYouGo: cityDetails.beforeYouGo,
-          overview: cityDetails.overview,
-          places: mergedPlaces
-        });
+      await updateCity(city.id, {
+        name: cityDetails.name,
+        country: cityDetails.country,
+        latitude: cityDetails.latitude,
+        longitude: cityDetails.longitude,
+        googleMapLink: cityDetails.googleMapLink,
+        datesVisited: cityDetails.datesVisited,
+        beforeYouGo: cityDetails.beforeYouGo,
+        overview: cityDetails.overview,
+        places: mergedPlaces
+      });
 
-        const placesAdded = Object.values(update.places).reduce((sum, arr) => sum + (arr?.length || 0), 0);
-        totalPlaces += placesAdded;
-        citiesUpdated++;
-      }
-
-      setSuccess(`Added ${totalPlaces} place${totalPlaces !== 1 ? 's' : ''} to ${citiesUpdated} cit${citiesUpdated !== 1 ? 'ies' : 'y'}.`);
+      setSuccess(`Added "${placeName}" to ${city.name} (${category}).`);
       setUploadText('');
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save updates');
+      setError(err instanceof Error ? err.message : 'Failed to save place');
     } finally {
       setUploading(false);
     }
@@ -173,17 +132,24 @@ export const PlacesUpload: React.FC = () => {
   return (
     <div className="places-upload">
       <p className="places-upload-help">
-        Format: <code>city, category, place name, link (optional), notes (optional)</code>
+        Enter one place with each field on a new line:
       </p>
+      <ol className="places-upload-format">
+        <li>City name</li>
+        <li>Category (bars, restaurants, poi, gyms, accommodations)</li>
+        <li>Place name</li>
+        <li>Link (optional)</li>
+        <li>Notes (optional)</li>
+      </ol>
       <textarea
         className="places-upload-textarea"
         value={uploadText}
         onChange={(e) => setUploadText(e.target.value)}
-        placeholder={`Categories: bars, restaurants, poi, gyms, accommodations
-
-Tokyo, restaurants, Sukiyabashi Jiro, https://example.com, Amazing sushi
-Paris, bars, Le Comptoir
-Barcelona, poi, Sagrada Familia`}
+        placeholder={`Tokyo
+restaurants
+Sukiyabashi Jiro
+https://example.com
+Amazing sushi`}
         rows={6}
         disabled={uploading}
       />
@@ -194,7 +160,7 @@ Barcelona, poi, Sagrada Familia`}
         onClick={handleUpload}
         disabled={uploading || !uploadText.trim()}
       >
-        {uploading ? 'Uploading...' : 'Upload Places'}
+        {uploading ? 'Adding...' : 'Add Place'}
       </button>
     </div>
   );

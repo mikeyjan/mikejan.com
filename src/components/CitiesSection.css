@@ -5,7 +5,7 @@
 .cities-section {
   width: 100%;
   padding: 3rem 0 4rem;
-  background: var(--color-bg, #0a0a0a);
+  background: var(--color-bg, #ffffff);
   position: relative;
 }
 
@@ -26,7 +26,7 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-primary, #2dd4bf);
+  color: var(--color-primary, #dc2626);
   margin-bottom: 0.75rem;
 }
 
@@ -40,10 +40,10 @@
 }
 
 .cities-section-title {
-  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-family: var(--font-display, -apple-system, BlinkMacSystemFont, sans-serif);
   font-size: 2rem;
   font-weight: 700;
-  color: #ffffff;
+  color: rgba(0, 0, 0, 0.87);
   margin-bottom: 0.4rem;
   letter-spacing: -0.5px;
 }
@@ -51,7 +51,7 @@
 .cities-section-subtitle {
   font-family: var(--font-body, inherit);
   font-size: 0.9rem;
-  color: var(--color-text-subtle, rgba(255, 255, 255, 0.35));
+  color: var(--color-text-subtle, rgba(0, 0, 0, 0.45));
 }
 
 .cities-controls {
@@ -69,10 +69,10 @@
 /* Segmented control */
 .view-mode-segmented {
   display: inline-flex;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .segment-btn {
@@ -81,9 +81,9 @@
   font-size: 0.8rem;
   font-weight: 500;
   background-color: transparent;
-  color: var(--color-text-subtle, rgba(255, 255, 255, 0.35));
+  color: var(--color-text-subtle, rgba(0, 0, 0, 0.45));
   border: none;
-  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
   cursor: pointer;
   min-height: 36px;
   display: inline-flex;
@@ -105,13 +105,13 @@
 }
 
 .segment-btn:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--color-text, rgba(255, 255, 255, 0.7));
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text, rgba(0, 0, 0, 0.7));
 }
 
 .segment-btn.active {
-  background-color: rgba(45, 212, 191, 0.12);
-  color: var(--color-primary, #2dd4bf);
+  background-color: rgba(220, 38, 38, 0.1);
+  color: var(--color-primary, #dc2626);
 }
 
 /* Active indicator animation */
@@ -123,13 +123,13 @@
   transform: translateX(-50%);
   width: 20px;
   height: 2px;
-  background: var(--color-primary, #2dd4bf);
+  background: var(--color-primary, #dc2626);
   border-radius: 1px;
   animation: scaleIn 0.2s ease-out;
 }
 
 .segment-btn:focus {
-  outline: 2px solid var(--color-primary, #2dd4bf);
+  outline: 2px solid var(--color-primary, #dc2626);
   outline-offset: -2px;
 }
 

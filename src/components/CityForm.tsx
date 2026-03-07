@@ -51,9 +51,12 @@ interface CityFormProps {
  * Requirements: 8.2-8.10, 9.1-9.7
  */
 const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
-  const { createCity, updateCity } = useData();
+  const { createCity, updateCity, getCityDetails } = useData();
   
   const isEditMode = !!city;
+  
+  // Loading state for fetching city details
+  const [loadingDetails, setLoadingDetails] = useState(false);
   
   // Form state
   const [formData, setFormData] = useState<CreateCityRequest>({
@@ -99,6 +102,10 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
   const [bulkImportSuccess, setBulkImportSuccess] = useState<string | null>(null);
   const [bulkImporting, setBulkImporting] = useState(false);
   
+  // Place editing state
+  const [editingPlace, setEditingPlace] = useState<{ category: keyof PlacesCategories; index: number } | null>(null);
+  const [editPlaceData, setEditPlaceData] = useState<{ title: string; link: string; notes: string }>({ title: '', link: '', notes: '' });
+  
   // Collapsible section state (collapsed by default in edit mode)
   const [isBasicInfoExpanded, setIsBasicInfoExpanded] = useState(!city);
   const [isContentExpanded, setIsContentExpanded] = useState(!city);
@@ -129,21 +136,69 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
    */
   useEffect(() => {
     if (city) {
-      setFormData({
-        name: city.name,
-        country: city.country,
-        latitude: city.latitude,
-        longitude: city.longitude,
-        googleMapLink: city.googleMapLink,
-        datesVisited: city.datesVisited,
-        beforeYouGo: city.beforeYouGo,
-        overview: city.overview,
-        places: city.places
-      });
+      // Fetch full city details including places
+      const fetchCityDetails = async () => {
+        setLoadingDetails(true);
+        try {
+          const fullCity = await getCityDetails(city.id);
+          
+          // Ensure places has all required categories with fallback to empty arrays
+          const defaultPlaces = {
+            bars: [],
+            restaurants: [],
+            pointsOfInterest: [],
+            gyms: [],
+            accommodations: []
+          };
+          
+          setFormData({
+            name: fullCity.name || '',
+            country: fullCity.country || '',
+            latitude: fullCity.latitude || 0,
+            longitude: fullCity.longitude || 0,
+            googleMapLink: fullCity.googleMapLink || '',
+            datesVisited: fullCity.datesVisited || [],
+            beforeYouGo: fullCity.beforeYouGo || '',
+            overview: fullCity.overview || '',
+            places: {
+              ...defaultPlaces,
+              ...(fullCity.places || {})
+            }
+          });
+        } catch (err) {
+          // Fallback to basic city data if fetch fails
+          const defaultPlaces = {
+            bars: [],
+            restaurants: [],
+            pointsOfInterest: [],
+            gyms: [],
+            accommodations: []
+          };
+          
+          setFormData({
+            name: city.name || '',
+            country: city.country || '',
+            latitude: city.latitude || 0,
+            longitude: city.longitude || 0,
+            googleMapLink: city.googleMapLink || '',
+            datesVisited: city.datesVisited || [],
+            beforeYouGo: city.beforeYouGo || '',
+            overview: city.overview || '',
+            places: {
+              ...defaultPlaces,
+              ...(city.places || {})
+            }
+          });
+        } finally {
+          setLoadingDetails(false);
+        }
+      };
+      
+      fetchCityDetails();
       // In edit mode, coordinates are already set
       setManualCoordinates(true);
     }
-  }, [city]);
+  }, [city, getCityDetails]);
 
   /**
    * Validate form data
@@ -305,6 +360,52 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
         [category]: prev.places[category].filter((_, i) => i !== index)
       }
     }));
+  };
+
+  /**
+   * Start editing a place
+   */
+  const handleEditPlace = (category: keyof PlacesCategories, index: number) => {
+    const place = formData.places[category][index];
+    setEditingPlace({ category, index });
+    setEditPlaceData({
+      title: place.title,
+      link: place.link || '',
+      notes: place.notes || ''
+    });
+  };
+
+  /**
+   * Save edited place
+   */
+  const handleSaveEditPlace = () => {
+    if (!editingPlace || !editPlaceData.title.trim()) return;
+    
+    const { category, index } = editingPlace;
+    const updatedPlace: Place = {
+      title: editPlaceData.title.trim(),
+      ...(editPlaceData.link.trim() && { link: editPlaceData.link.trim() }),
+      ...(editPlaceData.notes.trim() && { notes: editPlaceData.notes.trim() })
+    };
+
+    setFormData(prev => ({
+      ...prev,
+      places: {
+        ...prev.places,
+        [category]: prev.places[category].map((p, i) => i === index ? updatedPlace : p)
+      }
+    }));
+    
+    setEditingPlace(null);
+    setEditPlaceData({ title: '', link: '', notes: '' });
+  };
+
+  /**
+   * Cancel editing a place
+   */
+  const handleCancelEditPlace = () => {
+    setEditingPlace(null);
+    setEditPlaceData({ title: '', link: '', notes: '' });
   };
 
   /**
@@ -576,6 +677,18 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
       setGeocoding(false);
     }
   };
+
+  if (loadingDetails) {
+    return (
+      <div className="city-form">
+        <h2 className="city-form-title">Edit City</h2>
+        <div className="city-form-loading">
+          <div className="loading-spinner"></div>
+          <p>Loading city details...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="city-form">
@@ -907,20 +1020,63 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
               <div className="city-form-places-list">
                 {formData.places.bars.map((place, index) => (
                   <div key={index} className="city-form-place-item">
-                    <div className="city-form-place-info">
-                      <span className="city-form-place-title">{place.title}</span>
-                      {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
-                      {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePlace('bars', index)}
-                      disabled={saving}
-                      className="city-form-remove-button"
-                      aria-label={`Remove ${place.title}`}
-                    >
-                      ×
-                    </button>
+                    {editingPlace?.category === 'bars' && editingPlace?.index === index ? (
+                      <div className="city-form-place-edit">
+                        <input
+                          type="text"
+                          value={editPlaceData.title}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, title: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Place name"
+                        />
+                        <input
+                          type="url"
+                          value={editPlaceData.link}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, link: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Link (optional)"
+                        />
+                        <input
+                          type="text"
+                          value={editPlaceData.notes}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, notes: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Notes (optional)"
+                        />
+                        <div className="city-form-place-edit-actions">
+                          <button type="button" onClick={handleSaveEditPlace} className="city-form-save-button">Save</button>
+                          <button type="button" onClick={handleCancelEditPlace} className="city-form-cancel-button">Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="city-form-place-info">
+                          <span className="city-form-place-title">{place.title}</span>
+                          {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
+                          {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
+                        </div>
+                        <div className="city-form-place-actions">
+                          <button
+                            type="button"
+                            onClick={() => handleEditPlace('bars', index)}
+                            disabled={saving}
+                            className="city-form-edit-button"
+                            aria-label={`Edit ${place.title}`}
+                          >
+                            ✎
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePlace('bars', index)}
+                            disabled={saving}
+                            className="city-form-remove-button"
+                            aria-label={`Remove ${place.title}`}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
@@ -968,20 +1124,63 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
               <div className="city-form-places-list">
                 {formData.places.restaurants.map((place, index) => (
                   <div key={index} className="city-form-place-item">
-                    <div className="city-form-place-info">
-                      <span className="city-form-place-title">{place.title}</span>
-                      {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
-                      {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePlace('restaurants', index)}
-                      disabled={saving}
-                      className="city-form-remove-button"
-                      aria-label={`Remove ${place.title}`}
-                    >
-                      ×
-                    </button>
+                    {editingPlace?.category === 'restaurants' && editingPlace?.index === index ? (
+                      <div className="city-form-place-edit">
+                        <input
+                          type="text"
+                          value={editPlaceData.title}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, title: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Place name"
+                        />
+                        <input
+                          type="url"
+                          value={editPlaceData.link}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, link: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Link (optional)"
+                        />
+                        <input
+                          type="text"
+                          value={editPlaceData.notes}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, notes: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Notes (optional)"
+                        />
+                        <div className="city-form-place-edit-actions">
+                          <button type="button" onClick={handleSaveEditPlace} className="city-form-save-button">Save</button>
+                          <button type="button" onClick={handleCancelEditPlace} className="city-form-cancel-button">Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="city-form-place-info">
+                          <span className="city-form-place-title">{place.title}</span>
+                          {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
+                          {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
+                        </div>
+                        <div className="city-form-place-actions">
+                          <button
+                            type="button"
+                            onClick={() => handleEditPlace('restaurants', index)}
+                            disabled={saving}
+                            className="city-form-edit-button"
+                            aria-label={`Edit ${place.title}`}
+                          >
+                            ✎
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePlace('restaurants', index)}
+                            disabled={saving}
+                            className="city-form-remove-button"
+                            aria-label={`Remove ${place.title}`}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
@@ -1029,20 +1228,63 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
               <div className="city-form-places-list">
                 {formData.places.pointsOfInterest.map((place, index) => (
                   <div key={index} className="city-form-place-item">
-                    <div className="city-form-place-info">
-                      <span className="city-form-place-title">{place.title}</span>
-                      {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
-                      {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePlace('pointsOfInterest', index)}
-                      disabled={saving}
-                      className="city-form-remove-button"
-                      aria-label={`Remove ${place.title}`}
-                    >
-                      ×
-                    </button>
+                    {editingPlace?.category === 'pointsOfInterest' && editingPlace?.index === index ? (
+                      <div className="city-form-place-edit">
+                        <input
+                          type="text"
+                          value={editPlaceData.title}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, title: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Place name"
+                        />
+                        <input
+                          type="url"
+                          value={editPlaceData.link}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, link: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Link (optional)"
+                        />
+                        <input
+                          type="text"
+                          value={editPlaceData.notes}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, notes: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Notes (optional)"
+                        />
+                        <div className="city-form-place-edit-actions">
+                          <button type="button" onClick={handleSaveEditPlace} className="city-form-save-button">Save</button>
+                          <button type="button" onClick={handleCancelEditPlace} className="city-form-cancel-button">Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="city-form-place-info">
+                          <span className="city-form-place-title">{place.title}</span>
+                          {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
+                          {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
+                        </div>
+                        <div className="city-form-place-actions">
+                          <button
+                            type="button"
+                            onClick={() => handleEditPlace('pointsOfInterest', index)}
+                            disabled={saving}
+                            className="city-form-edit-button"
+                            aria-label={`Edit ${place.title}`}
+                          >
+                            ✎
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePlace('pointsOfInterest', index)}
+                            disabled={saving}
+                            className="city-form-remove-button"
+                            aria-label={`Remove ${place.title}`}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
@@ -1090,20 +1332,63 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
               <div className="city-form-places-list">
                 {formData.places.gyms.map((place, index) => (
                   <div key={index} className="city-form-place-item">
-                    <div className="city-form-place-info">
-                      <span className="city-form-place-title">{place.title}</span>
-                      {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
-                      {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePlace('gyms', index)}
-                      disabled={saving}
-                      className="city-form-remove-button"
-                      aria-label={`Remove ${place.title}`}
-                    >
-                      ×
-                    </button>
+                    {editingPlace?.category === 'gyms' && editingPlace?.index === index ? (
+                      <div className="city-form-place-edit">
+                        <input
+                          type="text"
+                          value={editPlaceData.title}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, title: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Place name"
+                        />
+                        <input
+                          type="url"
+                          value={editPlaceData.link}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, link: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Link (optional)"
+                        />
+                        <input
+                          type="text"
+                          value={editPlaceData.notes}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, notes: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Notes (optional)"
+                        />
+                        <div className="city-form-place-edit-actions">
+                          <button type="button" onClick={handleSaveEditPlace} className="city-form-save-button">Save</button>
+                          <button type="button" onClick={handleCancelEditPlace} className="city-form-cancel-button">Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="city-form-place-info">
+                          <span className="city-form-place-title">{place.title}</span>
+                          {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
+                          {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
+                        </div>
+                        <div className="city-form-place-actions">
+                          <button
+                            type="button"
+                            onClick={() => handleEditPlace('gyms', index)}
+                            disabled={saving}
+                            className="city-form-edit-button"
+                            aria-label={`Edit ${place.title}`}
+                          >
+                            ✎
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePlace('gyms', index)}
+                            disabled={saving}
+                            className="city-form-remove-button"
+                            aria-label={`Remove ${place.title}`}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
@@ -1151,20 +1436,63 @@ const CityForm: React.FC<CityFormProps> = ({ city, onSuccess, onCancel }) => {
               <div className="city-form-places-list">
                 {formData.places.accommodations.map((place, index) => (
                   <div key={index} className="city-form-place-item">
-                    <div className="city-form-place-info">
-                      <span className="city-form-place-title">{place.title}</span>
-                      {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
-                      {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePlace('accommodations', index)}
-                      disabled={saving}
-                      className="city-form-remove-button"
-                      aria-label={`Remove ${place.title}`}
-                    >
-                      ×
-                    </button>
+                    {editingPlace?.category === 'accommodations' && editingPlace?.index === index ? (
+                      <div className="city-form-place-edit">
+                        <input
+                          type="text"
+                          value={editPlaceData.title}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, title: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Place name"
+                        />
+                        <input
+                          type="url"
+                          value={editPlaceData.link}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, link: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Link (optional)"
+                        />
+                        <input
+                          type="text"
+                          value={editPlaceData.notes}
+                          onChange={(e) => setEditPlaceData(prev => ({ ...prev, notes: e.target.value }))}
+                          className="city-form-input"
+                          placeholder="Notes (optional)"
+                        />
+                        <div className="city-form-place-edit-actions">
+                          <button type="button" onClick={handleSaveEditPlace} className="city-form-save-button">Save</button>
+                          <button type="button" onClick={handleCancelEditPlace} className="city-form-cancel-button">Cancel</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="city-form-place-info">
+                          <span className="city-form-place-title">{place.title}</span>
+                          {place.link && <a href={place.link} target="_blank" rel="noopener noreferrer" className="city-form-place-link">🔗</a>}
+                          {place.notes && <span className="city-form-place-notes">{place.notes}</span>}
+                        </div>
+                        <div className="city-form-place-actions">
+                          <button
+                            type="button"
+                            onClick={() => handleEditPlace('accommodations', index)}
+                            disabled={saving}
+                            className="city-form-edit-button"
+                            aria-label={`Edit ${place.title}`}
+                          >
+                            ✎
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleRemovePlace('accommodations', index)}
+                            disabled={saving}
+                            className="city-form-remove-button"
+                            aria-label={`Remove ${place.title}`}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>

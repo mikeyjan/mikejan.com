@@ -75,16 +75,15 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
   /**
    * Format dates visited for display
    * Requirements: 5.6
+   * Note: Dates are stored as human-readable strings (e.g., "February, 2026")
    */
   const formatDatesVisited = (dates: string[]): string => {
     if (!dates || dates.length === 0) {
       return 'No dates recorded';
     }
     
-    return dates.map(date => {
-      const d = new Date(date);
-      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
-    }).join(', ');
+    // Dates are already stored in human-readable format, just join them
+    return dates.join(', ');
   };
 
   /**

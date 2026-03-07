@@ -127,7 +127,7 @@ export const AdminPanel: React.FC = () => {
     <div className="admin-dashboard">
       <section className="admin-section">
         <div className="admin-section-header">
-          <h2 className="admin-section-title">Places Upload</h2>
+          <h2 className="admin-section-title">Quick Upload</h2>
         </div>
         <div className="admin-section-content">
           <PlacesUpload />

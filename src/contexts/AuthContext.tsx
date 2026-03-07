@@ -5,13 +5,15 @@
  * This context provides authentication functionality including:
  * - Login with password authentication
  * - Logout to revoke access
- * - Token management (stored in memory only, not localStorage)
+ * - Token management (stored in localStorage for persistence)
  * - Authentication state tracking
  */
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 import { AdminAuthRequest, AdminAuthResponse } from '../types';
 import API_ENDPOINTS from '../config/api';
+
+const TOKEN_STORAGE_KEY = 'admin_auth_token';
 
 /**
  * Authentication context value interface
@@ -42,8 +44,14 @@ interface AuthProviderProps {
  * Requirements: 6.1-6.5
  */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  // Store token in memory only (not localStorage) as per requirements
-  const [token, setToken] = useState<string | null>(null);
+  // Initialize token from localStorage for persistence across page reloads
+  const [token, setToken] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem(TOKEN_STORAGE_KEY);
+    } catch {
+      return null;
+    }
+  });
   const [error, setError] = useState<string | null>(null);
 
   // Derive authentication state from token presence
@@ -87,9 +95,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Parse successful authentication response
       const data: AdminAuthResponse = await response.json();
 
-      // Store token in memory
+      // Store token in localStorage for persistence
       // Requirements: 6.2, 6.4 - Grant access and maintain authentication state
       setToken(data.token);
+      try {
+        localStorage.setItem(TOKEN_STORAGE_KEY, data.token);
+      } catch {
+        // localStorage might be unavailable, token still works in memory
+      }
       setError(null);
 
     } catch (err) {
@@ -105,9 +118,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    * Requirements: 6.5
    */
   const logout = useCallback((): void => {
-    // Clear token from memory
+    // Clear token from memory and localStorage
     setToken(null);
     setError(null);
+    try {
+      localStorage.removeItem(TOKEN_STORAGE_KEY);
+    } catch {
+      // localStorage might be unavailable
+    }
   }, []);
 
   // Provide authentication context to children

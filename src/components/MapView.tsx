@@ -88,12 +88,12 @@ export const MapView: React.FC<MapViewProps> = ({ cities, onCitySelect }) => {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill="#1e1e1e"
-                  stroke="#2a2a2a"
+                  fill="#e5e7eb"
+                  stroke="#d1d5db"
                   strokeWidth={0.5}
                   style={{
                     default: { outline: 'none' },
-                    hover: { outline: 'none', fill: '#252525' },
+                    hover: { outline: 'none', fill: '#d1d5db' },
                     pressed: { outline: 'none' }
                   }}
                 />
@@ -109,8 +109,8 @@ export const MapView: React.FC<MapViewProps> = ({ cities, onCitySelect }) => {
             >
               <circle
                 r={6}
-                fill="#2dd4bf"
-                stroke="#0a0a0a"
+                fill="#dc2626"
+                stroke="#ffffff"
                 strokeWidth={2}
                 className="city-marker"
                 onClick={() => handleMarkerClick(city)}
