@@ -128,6 +128,10 @@
 }
 
 .overlay-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
   padding-right: 3rem;
   animation: fadeInUp 0.4s ease-out backwards;
@@ -139,9 +143,13 @@
   font-size: 2rem;
   font-weight: 700;
   margin: 0 0 0.75rem 0;
-  color: rgba(0, 0, 0, 0.87);
+  color: #ffffff;
+  background-color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   line-height: 1.15;
   letter-spacing: -0.5px;
+  display: inline-block;
 }
 
 .overlay-map-link {
@@ -239,30 +247,30 @@
   margin-bottom: 0;
 }
 
-/* Category-specific colors - shades of red */
+/* Category-specific colors - bright primary colors */
 .overlay-category-bars {
-  border-left-color: #dc2626;
-  background: rgba(220, 38, 38, 0.05);
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
 }
 
 .overlay-category-restaurants {
-  border-left-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
+  border-left-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.12);
 }
 
 .overlay-category-poi {
-  border-left-color: #b91c1c;
-  background: rgba(185, 28, 28, 0.05);
+  border-left-color: #22c55e;
+  background: rgba(34, 197, 94, 0.12);
 }
 
 .overlay-category-gyms {
-  border-left-color: #f87171;
-  background: rgba(248, 113, 113, 0.05);
+  border-left-color: #f97316;
+  background: rgba(249, 115, 22, 0.12);
 }
 
 .overlay-category-accommodations {
-  border-left-color: #991b1b;
-  background: rgba(153, 27, 27, 0.05);
+  border-left-color: #a855f7;
+  background: rgba(168, 85, 247, 0.12);
 }
 
 .overlay-category-title {
@@ -450,4 +458,21 @@ a.overlay-place-title:hover {
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+
+/* Backdrop for click-outside-to-close */
+.overlay-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.overlay-sidepanel .overlay-backdrop {
+  right: auto;
+  width: 5%;
 }

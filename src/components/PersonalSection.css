@@ -37,10 +37,13 @@
   font-family: var(--font-display, -apple-system, BlinkMacSystemFont, sans-serif);
   font-size: 4rem;
   font-weight: 700;
-  color: rgba(0, 0, 0, 0.87);
+  color: #ffffff;
+  background-color: #dc2626;
+  padding: 0.75rem 1rem;
   margin: 0 0 0.75rem 0;
   line-height: 1.05;
   letter-spacing: -2px;
+  display: inline-block;
   animation: fadeInUp 0.6s ease-out backwards;
   animation-delay: 0.1s;
 }

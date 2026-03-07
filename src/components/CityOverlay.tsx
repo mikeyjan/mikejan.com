@@ -92,6 +92,7 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
   if (loading) {
     return (
       <div className={`city-overlay overlay-sidepanel${isClosing ? ' closing' : ''}`}>
+        <div className="overlay-backdrop" onClick={onClose} aria-hidden="true" />
         <div className="overlay-content">
           <div className="overlay-loading">
             <div className="loading-spinner"></div>
@@ -105,6 +106,7 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
   if (error || !cityDetails) {
     return (
       <div className={`city-overlay overlay-sidepanel${isClosing ? ' closing' : ''}`}>
+        <div className="overlay-backdrop" onClick={onClose} aria-hidden="true" />
         <div className="overlay-content">
           <button className="overlay-close" onClick={onClose} aria-label="Close overlay">
             ✕
@@ -124,6 +126,8 @@ export const CityOverlay: React.FC<CityOverlayProps> = ({ city, isClosing = fals
    */
   return (
     <div className={`city-overlay overlay-sidepanel${isClosing ? ' closing' : ''}`}>
+      {/* Backdrop - click to close */}
+      <div className="overlay-backdrop" onClick={onClose} aria-hidden="true" />
       <div className="overlay-content">
         {/* Close button - Requirements: 5.10 */}
         <button className="overlay-close" onClick={onClose} aria-label="Close overlay">
